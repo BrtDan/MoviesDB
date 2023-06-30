@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "MoviesDB"
 include ':app'
+include ':core'
+include ':core:network'
+include ':core:common'
