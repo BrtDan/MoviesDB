@@ -71,14 +71,6 @@
 
     <!--    CARD TOP RATED MOVIES   -->
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="100sp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView1"
         android:layout_width="100sp"
@@ -118,7 +110,8 @@
         android:layout_marginTop="115sp"
         app:layout_constraintTop_toTopOf="@+id/toolbar">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
+            android:id="@+id/imageMovies2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/placeholder_view" />
@@ -146,7 +139,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
+            android:id="@+id/imageMovies3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/placeholder_view" />

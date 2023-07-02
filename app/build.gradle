@@ -42,6 +42,11 @@ android {
 
 dependencies {
 
+    implementation 'com.eightbitlab:blurview:1.6.6'
+
+    // Dipendenza picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
+
     // Dipendenze Hilt
     implementation 'com.google.dagger:hilt-android:2.46.1'
     kapt 'com.google.dagger:hilt-compiler:2.46.1'
@@ -51,6 +56,7 @@ dependencies {
 
     implementation(project(":core:network"))
     implementation(project(":core:common"))
+    implementation(project(":firstMoviesTopRated:"))
 
     // Dipendenze Retrofit e Moshi
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

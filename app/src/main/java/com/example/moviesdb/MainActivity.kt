@@ -1,13 +1,13 @@
 package com.example.moviesdb
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.moviesdb.databinding.ActivityMainBinding
 import androidx.activity.viewModels
-import com.example.network.MoviesConvert
+import com.example.firstmoviestoprated.firstMoviesTopRatedActivity
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import org.json.JSONException
-import org.json.JSONObject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val language = "it-IT" // binding.lang.text
+        val language = "it-IT"
 
         viewModel.getTopRatedMovies(language, 1)
 
@@ -28,9 +28,25 @@ class MainActivity : AppCompatActivity() {
                 binding.moviesName1.text = it.data?.results?.get(0)?.title
                 binding.moviesName2.text = it.data?.results?.get(1)?.title
                 binding.moviesName3.text = it.data?.results?.get(2)?.title
-                binding.imageMovies1. = it.data?.results?.get(0)?.poster_path // FIXME: AGGIUSTARE IMMAGINE PER I TOP RATED MOVIES 
+                var baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini the movie db
+                var posterPath = it.data?.results?.get(0)?.poster_path
+                var imageUrl = "$baseUrl$posterPath"
+                Picasso.get().load(imageUrl).into(binding.imageMovies1)
+                posterPath = it.data?.results?.get(1)?.poster_path
+                imageUrl = "$baseUrl$posterPath"
+                Picasso.get().load(imageUrl).into(binding.imageMovies2)
+                posterPath = it.data?.results?.get(2)?.poster_path
+                imageUrl = "$baseUrl$posterPath"
+                Picasso.get().load(imageUrl).into(binding.imageMovies3)
+
             }
         }
+
+        binding.materialCardView1.setOnClickListener{
+            val intent = Intent(this, firstMoviesTopRatedActivity::class.java)
+            startActivity(intent)
+        }
+
         /* CLICK SULL'IMG LIST */
         binding.list.setOnClickListener{
 
