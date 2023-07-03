@@ -14,7 +14,7 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/common" />
             <option value="$PROJECT_DIR$/core/network" />
-            <option value="$PROJECT_DIR$/firstMoviesTopRated" />
+            <option value="$PROJECT_DIR$/moviesTopRated" />
           </set>
         </option>
       </GradleProjectSettings>

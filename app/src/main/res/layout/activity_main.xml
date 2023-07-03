@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/list"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:src="@drawable/baseline_list_white_48" />
 
         </LinearLayout>
@@ -55,7 +55,7 @@
     <!-- Resto del layout -->
 
     <!--    TESTO TOP RATED MOVIES  -->
-
+    <!--            MOVIES          -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -85,6 +85,7 @@
             android:id="@+id/imageMovies1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:src="@drawable/placeholder_view" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -93,8 +94,7 @@
         android:layout_width="100sp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="moviesName1"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="@+id/materialCardView1"
         app:layout_constraintStart_toStartOf="@+id/materialCardView1"
@@ -114,16 +114,16 @@
             android:id="@+id/imageMovies2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:src="@drawable/placeholder_view" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/moviesName2"
-        android:layout_width="wrap_content"
+        android:layout_width="100sp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="12sp"
-        android:text="moviesName2"
+        android:textSize="14sp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="@+id/materialCardView2"
         app:layout_constraintStart_toStartOf="@+id/materialCardView2"
@@ -143,20 +143,121 @@
             android:id="@+id/imageMovies3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:src="@drawable/placeholder_view" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/moviesName3"
-        android:layout_width="wrap_content"
+        android:layout_width="100sp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="12sp"
-        android:text="moviesName3"
+        android:textSize="14sp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="@+id/materialCardView3"
         app:layout_constraintStart_toStartOf="@+id/materialCardView3"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
 
+    <!--        Tv series       -->
+
+    <TextView
+        android:id="@+id/textViewTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top rated tv series"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:layout_marginTop="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/moviesName2" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardViewTv1"
+        android:layout_width="100sp"
+        android:layout_height="75sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTv">
+
+        <ImageView
+            android:id="@+id/imageTv1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/placeholder_view" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvName1"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/materialCardViewTv1"
+        app:layout_constraintStart_toStartOf="@+id/materialCardViewTv1"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardViewTv1"
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardViewTv2"
+        android:layout_width="100sp"
+        android:layout_height="75sp"
+        android:layout_marginTop="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTv">
+
+        <ImageView
+            android:id="@+id/imageTv2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/placeholder_view" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvName2"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/materialCardViewTv2"
+        app:layout_constraintStart_toStartOf="@+id/materialCardViewTv2"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardViewTv2"
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardViewTv3"
+        android:layout_width="100sp"
+        android:layout_height="75sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTv">
+
+        <ImageView
+            android:id="@+id/imageTv3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/placeholder_view" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvName3"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/materialCardViewTv3"
+        app:layout_constraintStart_toStartOf="@+id/materialCardViewTv3"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardViewTv3"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

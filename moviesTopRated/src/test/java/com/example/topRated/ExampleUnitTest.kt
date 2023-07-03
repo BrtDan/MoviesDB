@@ -1,4 +1,4 @@
-package com.example.firstmoviestoprated
+package com.example.topRated
 
 import org.junit.Test
 

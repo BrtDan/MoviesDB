@@ -42,7 +42,7 @@ android {
 
 dependencies {
 
-    implementation 'com.eightbitlab:blurview:1.6.6'
+//    implementation 'com.eightbitlab:blurview:1.6.6'
 
     // Dipendenza picasso
     implementation 'com.squareup.picasso:picasso:2.8'
@@ -56,7 +56,7 @@ dependencies {
 
     implementation(project(":core:network"))
     implementation(project(":core:common"))
-    implementation(project(":firstMoviesTopRated:"))
+    implementation(project(':moviesTopRated',))
 
     // Dipendenze Retrofit e Moshi
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

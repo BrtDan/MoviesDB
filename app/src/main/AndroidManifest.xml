@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.firstmoviestoprated.firstMoviesTopRatedActivity"
+            android:name="com.example.topRated.movieTopRatedActivity"
             android:exported="true" />
 
     </application>

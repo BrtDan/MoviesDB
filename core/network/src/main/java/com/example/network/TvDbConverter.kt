@@ -1,17 +1,17 @@
 package com.example.network
 
-data class MoviesConvert(
-    val results: List<Result>
+data class TvConvert(
+    val results: List<ResultTv>
 )
 
-data class Result(
+data class ResultTv(
     val id: Int,
     val original_language: String,
-    val original_title: String,
+    val original_name: String,
     val overview: String,
     val poster_path: String,
-    val release_date: String,
-    val title: String,
+    val first_air_date: String,
+    val name: String,
     val vote_average: Float,
     val vote_count: Int
 )
