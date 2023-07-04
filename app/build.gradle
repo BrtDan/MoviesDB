@@ -56,7 +56,8 @@ dependencies {
 
     implementation(project(":core:network"))
     implementation(project(":core:common"))
-    implementation(project(':moviesTopRated',))
+    implementation(project(':moviesTopRated'))
+    implementation(project(':actorsTrendingWeek'))
 
     // Dipendenze Retrofit e Moshi
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

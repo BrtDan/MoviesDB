@@ -2,6 +2,7 @@ package com.example.topRated
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.firstmoviestoprated.R
 import com.example.firstmoviestoprated.databinding.MovietopratedLayoutBinding
 import com.squareup.picasso.Picasso
 
@@ -31,7 +32,8 @@ class movieTopRatedActivity : AppCompatActivity() {
         binding.voteCount.text = "Vote: $vote_count"
 
         val voteAvg = intent.getStringExtra("voteAvg")
-        binding.voteAvg.text = voteAvg
+        val formattedVoteAvg = String.format("%.1f", voteAvg?.toFloatOrNull() ?: 0.0f)
+        binding.voteAvg.text = formattedVoteAvg
 
         binding.titleTextView.setOnClickListener{
             finish()
