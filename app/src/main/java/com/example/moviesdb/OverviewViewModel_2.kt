@@ -19,9 +19,9 @@ class OverviewViewModel_2 @Inject constructor(
 
     suspend fun getTopRatedTv(language: String, page: Int) {
         viewModelScope.launch {
-            _text.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null)
+            _text.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
             val tv = moviesDbRepository.getTopRatedTv(language, page)
-            _text.value = Response(isLoading = false, movieData = null, tvData = tv, trendingDay = null, trendingWeek = null, movieSearch = null)
+            _text.value = Response(isLoading = false, movieData = null, tvData = tv, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
         }
     }
 }

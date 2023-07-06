@@ -27,8 +27,11 @@ class MainActivity : AppCompatActivity() {
     val viewModel_4 by viewModels<OverviewViewModel_4>()
     val viewModel_5 by viewModels<OverviewViewModel_5>()
     val viewModel_6 by viewModels<OverviewViewModel_6>()
+    val viewModel_7 by viewModels<OverviewViewModel_7>()
 
     private val adapter by lazy { SearchAdapter() }
+    private val adapter2 by lazy { SearchAdapterTv() }
+    private val adapter3 by lazy { SearchAdapterActors() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,7 +158,7 @@ class MainActivity : AppCompatActivity() {
         viewModel_4.text.observe(this){
             binding.trendingWeekName1.text = it.trendingWeek?.results?.get(0)?.name
             binding.trendingWeekName2.text = it.trendingWeek?.results?.get(1)?.name
-            binding.trendingWeekName3.text = it.trendingWeek?.results?.get(2)?.name
+            binding.trendingWeekName3.text = it.trendingWeek?.results?.get(5)?.name
             binding.trendingWeekName4.text = it.trendingWeek?.results?.get(3)?.name
             binding.trendingWeekName5.text = it.trendingWeek?.results?.get(4)?.name
 
@@ -166,7 +169,7 @@ class MainActivity : AppCompatActivity() {
             posterPath = it.trendingWeek?.results?.get(1)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek2)
-            posterPath = it.trendingWeek?.results?.get(2)?.profile_path
+            posterPath = it.trendingWeek?.results?.get(5)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek3)
             posterPath = it.trendingWeek?.results?.get(3)?.profile_path
@@ -183,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                 putExtra_trendingWeek(1)
             }
             binding.imageTrendingWeek3.setOnClickListener{
-                putExtra_trendingWeek(2)
+                putExtra_trendingWeek(5)
             }
             binding.imageTrendingWeek4.setOnClickListener{
                 putExtra_trendingWeek(3)
@@ -218,19 +221,41 @@ class MainActivity : AppCompatActivity() {
         binding.searchItem.adapter = adapter
         binding.searchItem.layoutManager = LinearLayoutManager(this@MainActivity)
 
+        binding.searchTv.adapter = adapter2
+        binding.searchTv.layoutManager = LinearLayoutManager(this@MainActivity)
 
+        binding.searchActors.adapter = adapter3
+        binding.searchActors.layoutManager = LinearLayoutManager(this@MainActivity)
 
         binding.searchBarText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if(binding.radioMovies.isChecked){
                     viewModel_5.searchMovie(query, language)
                     viewModel_5.text.observe(this@MainActivity){
+                        binding.searchTv.visibility = View.GONE
+                        binding.searchItem.visibility = View.VISIBLE
+                        binding.searchActors.visibility = View.GONE
                         val searchList = it.movieSearch?.results
                         adapter.submitList(searchList)
                     }
-
-                } else{
+                } else if (binding.radioTvSeries.isChecked){
                     viewModel_6.searchTv(query, language)
+                    viewModel_6.text.observe(this@MainActivity){
+                        binding.searchItem.visibility = View.GONE
+                        binding.searchTv.visibility = View.VISIBLE
+                        binding.searchActors.visibility = View.GONE
+                        val searchList = it.tvSearch?.results
+                        adapter2.submitList(searchList)
+                    }
+                } else {
+                    viewModel_7.searchActors(query, language)
+                    viewModel_7.text.observe(this@MainActivity){
+                        binding.searchTv.visibility = View.GONE
+                        binding.searchItem.visibility = View.GONE
+                        binding.searchActors.visibility = View.VISIBLE
+                        val searchList = it.actorsSearch?.results
+                        adapter3.submitList(searchList)
+                    }
                 }
                 return true
             }

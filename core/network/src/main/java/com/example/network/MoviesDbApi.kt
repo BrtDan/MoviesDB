@@ -37,5 +37,12 @@ interface MoviesDbApi {
     suspend fun searchTv(
         @Query(value = "query") query: String,
         @Query(value = "language") language: String
-    ): TvConvert
+    ): TvSearchConvert
+
+    @GET("search/person?")
+    suspend fun searchActors(
+        @Query(value = "query") query: String,
+        @Query(value = "language") language: String
+    ): ActorsSearchConvert
+
 }

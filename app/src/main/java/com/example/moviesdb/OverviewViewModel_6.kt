@@ -19,9 +19,9 @@ class OverviewViewModel_6 @Inject constructor(
 
     fun searchTv(language: String, name: String) {
         viewModelScope.launch {
-            _text.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null)
+            _text.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
             val searchTv = moviesDbRepository.searchTv(language, name)
-            _text.value = Response(isLoading = false, movieData = null, tvData = searchTv, trendingDay = null, trendingWeek = null, movieSearch = null)
+            _text.value = Response(isLoading = false, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = searchTv, actorsSearch = null)
         }
     }
 }

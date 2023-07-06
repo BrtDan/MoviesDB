@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.network.ActorsSearchConvert
 import com.example.network.MoviesConvert
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.example.network.MoviesDbRepository
@@ -11,6 +12,7 @@ import com.example.network.MoviesSearchConvert
 import com.example.network.TrendingConvert
 import com.example.network.TrendingWeekConvert
 import com.example.network.TvConvert
+import com.example.network.TvSearchConvert
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +22,9 @@ data class Response(
     val tvData: TvConvert?,
     val trendingDay: TrendingConvert?,
     val trendingWeek: TrendingWeekConvert?,
-    val movieSearch: MoviesSearchConvert?
+    val movieSearch: MoviesSearchConvert?,
+    val actorsSearch: ActorsSearchConvert?,
+    val tvSearch:TvSearchConvert?
 )
 
 @HiltViewModel
@@ -33,9 +37,9 @@ class OverviewViewModel @Inject constructor(
 
     fun getTopRatedMovies(language: String, page: Int) {
         viewModelScope.launch {
-            _text.value = Response(isLoading = true, movieData = null, trendingDay = null, tvData = null, trendingWeek = null, movieSearch = null)
+            _text.value = Response(isLoading = true, movieData = null, trendingDay = null, tvData = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
             val movie = moviesDbRepository.getTopRatedMovies(language, page)
-            _text.value = Response(isLoading = false, movieData = movie, trendingDay = null, tvData = null, trendingWeek = null, movieSearch = null)
+            _text.value = Response(isLoading = false, movieData = movie, trendingDay = null, tvData = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
         }
     }
 }

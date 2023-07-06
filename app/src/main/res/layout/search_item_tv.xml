@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/imgSearch"
+                android:id="@+id/imgSearchTV"
                 android:layout_width="125sp"
                 android:layout_height="200sp"
                 android:background="@color/white"
@@ -30,7 +30,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/imgSearchMovie"
+                    android:id="@+id/imgSearchTvSeries"
                     />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -38,44 +38,30 @@
         <LinearLayout
             android:layout_width="250sp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="250sp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:id="@+id/titleSearch"
-                    android:layout_width="203sp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10sp"
-                    android:text="Spiderman"
-                    />
-
-                <ImageView
-                    android:id="@+id/favourite"
-                    android:layout_width="22sp"
-                    android:layout_height="22sp"
-                    android:layout_marginTop="10sp"
-                    android:src="@drawable/baseline_star_outline_white_48"
-                    />
-            </LinearLayout>
-
+            android:orientation="vertical"
+            >
             <TextView
-                android:id="@+id/dataLangOverviewVote"
+                android:id="@+id/titleSearchTv"
                 android:layout_width="225sp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10sp"
+                android:text="Breaking Bad"
+                />
+
+            <TextView
+                android:id="@+id/dataLangOverviewVoteTv"
+                android:layout_width="225sp"
+                android:layout_height="175sp"
                 android:justificationMode="inter_word"
                 android:layout_marginLeft="10sp"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
                 android:maxLines="12"
                 android:ellipsize="end"
-                android:text="2002-05-01 (en)\n\noverview\n\n7.2/10\n\n\n" />
-
+                android:text="2002-05-01 (en)\n\noverview\n\n7.2/10"
+                />
         </LinearLayout>
 
     </LinearLayout>

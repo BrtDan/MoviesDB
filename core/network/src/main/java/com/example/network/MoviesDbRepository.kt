@@ -26,8 +26,12 @@ class MoviesDbRepository @Inject constructor(
         return moviesSearchService.searchMovie(language, name)
     }
 
-    suspend fun searchTv(language: String, name: String): TvConvert{
+    suspend fun searchTv(language: String, name: String): TvSearchConvert{
         return moviesService.searchTv(language, name)
+    }
+
+    suspend fun searchActors(language: String, name: String): ActorsSearchConvert{
+        return moviesService.searchActors(language, name)
     }
 
 }

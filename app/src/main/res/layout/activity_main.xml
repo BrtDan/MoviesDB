@@ -96,6 +96,14 @@
                     android:layout_marginLeft="10sp"
                     android:textColor="@android:color/white" />
 
+                <RadioButton
+                    android:id="@+id/radio_actors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actors"
+                    android:layout_marginLeft="10sp"
+                    android:textColor="@android:color/white" />
+
             </RadioGroup>
 
         </LinearLayout>
@@ -122,6 +130,30 @@
             android:layout_marginTop="10sp"
             android:layout_marginBottom="100sp"
             tools:listitem="@layout/search_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="100sp"
+            tools:listitem="@layout/searchTv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchActors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="100sp"
+            tools:listitem="@layout/searchActors" />
 
     </LinearLayout>
 
