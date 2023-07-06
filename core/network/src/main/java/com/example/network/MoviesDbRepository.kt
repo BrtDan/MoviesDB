@@ -3,7 +3,8 @@ package com.example.network
 import javax.inject.Inject
 
 class MoviesDbRepository @Inject constructor(
-    private val moviesService: MoviesDbApi
+    private val moviesService: MoviesDbApi,
+    private val moviesSearchService: MoviesDbApi
 ) {
     suspend fun getTopRatedMovies(language: String, page: Int): MoviesConvert {
         return moviesService.getTopRatedMovies(language, page)
@@ -21,8 +22,8 @@ class MoviesDbRepository @Inject constructor(
         return moviesService.getTrendingWeek(language)
     }
 
-    suspend fun searchMovie(language: String, name: String): MoviesConvert{
-        return moviesService.searchMovie(language, name)
+    suspend fun searchMovie(language: String, name: String): MoviesSearchConvert {
+        return moviesSearchService.searchMovie(language, name)
     }
 
     suspend fun searchTv(language: String, name: String): TvConvert{

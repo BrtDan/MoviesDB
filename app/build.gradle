@@ -44,6 +44,10 @@ dependencies {
 
 //    implementation 'com.eightbitlab:blurview:1.6.6'
 
+    implementation "androidx.recyclerview:recyclerview:"
+    // For control over item selection of both touch and mouse driven selection
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+
     // Dipendenza picasso
     implementation 'com.squareup.picasso:picasso:2.8'
 
@@ -58,6 +62,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(':moviesTopRated'))
     implementation(project(':actorsTrendingWeek'))
+    implementation(project(':settings'))
 
     // Dipendenze Retrofit e Moshi
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

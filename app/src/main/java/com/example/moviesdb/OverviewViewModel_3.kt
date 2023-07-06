@@ -19,9 +19,9 @@ class OverviewViewModel_3 @Inject constructor(
 
     fun getTrendingDay(language: String, page: Int) {
         viewModelScope.launch {
-            _text.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null)
+            _text.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null)
             val trending = moviesDbRepository.getTrendingDay(language, page)
-            _text.value = Response(isLoading = false, movieData = null, tvData = null, trendingDay = trending, trendingWeek = null)
+            _text.value = Response(isLoading = false, movieData = null, tvData = null, trendingDay = trending, trendingWeek = null, movieSearch = null)
         }
     }
 }

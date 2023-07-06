@@ -29,6 +29,9 @@
         <activity
             android:name="com.example.actorstrendingweek.actorTopRatedActivity"
             android:exported="true" />
+        <activity
+            android:name="com.example.settings.settingActivity"
+            android:exported="true" />
 
     </application>
 

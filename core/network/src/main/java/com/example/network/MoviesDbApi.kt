@@ -31,11 +31,11 @@ interface MoviesDbApi {
     suspend fun searchMovie(
         @Query(value = "query") query: String,
         @Query(value = "language") language: String
-    ): MoviesConvert
+    ): MoviesSearchConvert
 
-    @GET("search/tv")
+    @GET("search/tv?")
     suspend fun searchTv(
-        @Query(value = "language") language: String,
-        @Query(value = "query") query: String
+        @Query(value = "query") query: String,
+        @Query(value = "language") language: String
     ): TvConvert
 }

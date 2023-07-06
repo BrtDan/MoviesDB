@@ -7,7 +7,9 @@ import android.view.View
 import android.widget.SearchView
 import com.example.moviesdb.databinding.ActivityMainBinding
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.actorstrendingweek.actorTopRatedActivity
+import com.example.settings.settingActivity
 import com.example.topRated.movieTopRatedActivity
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     val viewModel_4 by viewModels<OverviewViewModel_4>()
     val viewModel_5 by viewModels<OverviewViewModel_5>()
     val viewModel_6 by viewModels<OverviewViewModel_6>()
+
+    private val adapter by lazy { SearchAdapter() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -33,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         var state = "close"
 
         val language = "en-US"
+
+        /*      TOP RATED MOVIES        */
 
         viewModel.getTopRatedMovies(language, 1)
 
@@ -61,6 +68,8 @@ class MainActivity : AppCompatActivity() {
                 putExtra(2)
             }
         }
+
+        /*      TOP RATED TV SERIES     */
 
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
@@ -93,6 +102,8 @@ class MainActivity : AppCompatActivity() {
                 putExtra_tv(2)
             }
         }
+
+        /*      TRENDING OF THE DAY     */
 
         viewModel_3.getTrendingDay(language, 1)
 
@@ -138,11 +149,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        /*    TRENDING ACTORS OF THE WEEK     */
+
         viewModel_4.getTrendingWeek(language)
         viewModel_4.text.observe(this){
             binding.trendingWeekName1.text = it.trendingWeek?.results?.get(0)?.name
             binding.trendingWeekName2.text = it.trendingWeek?.results?.get(1)?.name
-            binding.trendingWeekName3.text = it.trendingWeek?.results?.get(5)?.name
+            binding.trendingWeekName3.text = it.trendingWeek?.results?.get(2)?.name
             binding.trendingWeekName4.text = it.trendingWeek?.results?.get(3)?.name
             binding.trendingWeekName5.text = it.trendingWeek?.results?.get(4)?.name
 
@@ -153,7 +166,7 @@ class MainActivity : AppCompatActivity() {
             posterPath = it.trendingWeek?.results?.get(1)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek2)
-            posterPath = it.trendingWeek?.results?.get(5)?.profile_path
+            posterPath = it.trendingWeek?.results?.get(2)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek3)
             posterPath = it.trendingWeek?.results?.get(3)?.profile_path
@@ -170,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                 putExtra_trendingWeek(1)
             }
             binding.imageTrendingWeek3.setOnClickListener{
-                putExtra_trendingWeek(5)
+                putExtra_trendingWeek(2)
             }
             binding.imageTrendingWeek4.setOnClickListener{
                 putExtra_trendingWeek(3)
@@ -183,30 +196,41 @@ class MainActivity : AppCompatActivity() {
         /* CLICK SULL'IMG LIST */
         binding.list.setOnClickListener{
             if(state == "open"){
-                binding.body.visibility = View.VISIBLE
-                binding.search.visibility = View.VISIBLE
-                binding.searchBar.visibility = View.GONE
                 binding.list.setImageResource(R.drawable.baseline_tune_white_48)
-//                binding.searchBarText.text = ""
+                binding.body.visibility = View.VISIBLE
+                binding.searchBar.visibility = View.GONE
                 state = "close"
+            } else {
+                val intent = Intent(this, settingActivity::class.java)
+                startActivity(intent)
             }
+
         }
 
         /* CLICK SULL'IMG SEARCH */
         binding.search.setOnClickListener{
-            binding.body.visibility = View.GONE
-            binding.search.visibility = View.GONE
             binding.list.setImageResource(R.drawable.baseline_close_white_48)
+            binding.body.visibility = View.GONE
             binding.searchBar.visibility = View.VISIBLE
             state = "open"
         }
 
+        binding.searchItem.adapter = adapter
+        binding.searchItem.layoutManager = LinearLayoutManager(this@MainActivity)
+
+
+
         binding.searchBarText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if(binding.radioMovies.isChecked){
-                    viewModel_5.searchMovie(language, query)
+                    viewModel_5.searchMovie(query, language)
+                    viewModel_5.text.observe(this@MainActivity){
+                        val searchList = it.movieSearch?.results
+                        adapter.submitList(searchList)
+                    }
+
                 } else{
-                    viewModel_6.searchTv(language, query)
+                    viewModel_6.searchTv(query, language)
                 }
                 return true
             }
