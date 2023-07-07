@@ -158,8 +158,8 @@ class MainActivity : AppCompatActivity() {
         viewModel_4.text.observe(this){
             binding.trendingWeekName1.text = it.trendingWeek?.results?.get(0)?.name
             binding.trendingWeekName2.text = it.trendingWeek?.results?.get(1)?.name
-            binding.trendingWeekName3.text = it.trendingWeek?.results?.get(5)?.name
-            binding.trendingWeekName4.text = it.trendingWeek?.results?.get(3)?.name
+            binding.trendingWeekName3.text = it.trendingWeek?.results?.get(2)?.name
+            binding.trendingWeekName4.text = it.trendingWeek?.results?.get(5)?.name
             binding.trendingWeekName5.text = it.trendingWeek?.results?.get(4)?.name
 
             val baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini tmdb
@@ -169,10 +169,10 @@ class MainActivity : AppCompatActivity() {
             posterPath = it.trendingWeek?.results?.get(1)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek2)
-            posterPath = it.trendingWeek?.results?.get(5)?.profile_path
+            posterPath = it.trendingWeek?.results?.get(2)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek3)
-            posterPath = it.trendingWeek?.results?.get(3)?.profile_path
+            posterPath = it.trendingWeek?.results?.get(5)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek4)
             posterPath = it.trendingWeek?.results?.get(4)?.profile_path
@@ -186,10 +186,10 @@ class MainActivity : AppCompatActivity() {
                 putExtra_trendingWeek(1)
             }
             binding.imageTrendingWeek3.setOnClickListener{
-                putExtra_trendingWeek(5)
+                putExtra_trendingWeek(2)
             }
             binding.imageTrendingWeek4.setOnClickListener{
-                putExtra_trendingWeek(3)
+                putExtra_trendingWeek(5)
             }
             binding.imageTrendingWeek5.setOnClickListener{
                 putExtra_trendingWeek(4)

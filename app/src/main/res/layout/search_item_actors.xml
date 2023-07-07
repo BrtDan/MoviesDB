@@ -22,7 +22,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/imgSearchAct"
                 android:layout_width="125sp"
-                android:layout_height="200sp"
+                android:layout_height="190sp"
                 android:background="@color/white"
                 android:layout_marginTop="10sp"
                 android:layout_marginLeft="10sp"
