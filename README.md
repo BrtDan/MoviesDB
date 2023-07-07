@@ -10,7 +10,7 @@ L'app utilizza l'API di The Movie Database (TMDB) per ottenere i dati.
 - Scopri gli attori di tendenza della settimana.
 - Ricerca film, serie TV o attori.
 - Fornisce informazioni dettagliate sui film, serie TV e attori selezionati.
-- 
+  
 ## Tecnologie utilizzate
 
 - Linguaggio di programmazione: Kotlin
