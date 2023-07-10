@@ -81,26 +81,16 @@
                 android:gravity="center"
                 android:text="Tom Cruise"
                 />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Known for:"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:textColor="@android:color/white"
-                />
-
             <TextView
                 android:id="@+id/knownFor"
                 android:layout_width="350sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15sp"
                 android:layout_marginBottom="20sp"
+                android:justificationMode="inter_word"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:layout_gravity="center"
-                android:text="- nameFilm (lang) date\n\noverviewFilm\n\nRateFilm"
                 />
 
         </LinearLayout>

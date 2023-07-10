@@ -45,7 +45,7 @@ class SearchAdapter: ListAdapter<ResultSearch, SearchAdapter.SearchViewHolder>(
             val overview : String? = Res.overview
             val vote : Float? = Res.vote_average
             val formattedVoteAvg = String.format("%.1f", vote ?: 0.0f)
-            binding.dataLangOverviewVote.text = "$date ($lang) $formattedVoteAvg/10\n\n$overview"
+            binding.dataLangOverviewVote.text = "$date ($lang) | $formattedVoteAvg/10\n\n$overview"
             val baseUrl = "https://image.tmdb.org/t/p/w500"
             val posterPath = Res.poster_path
             var imageUrl = "$baseUrl$posterPath"

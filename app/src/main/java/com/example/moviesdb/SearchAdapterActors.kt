@@ -45,7 +45,7 @@ class SearchAdapterActors: ListAdapter<ActorsSearch, SearchAdapterActors.SearchA
             val title : String? = resultActors.known_for?.get(0)?.nameTitle
             val vote : Float? = resultActors.known_for?.get(0)?.vote_average
             val formattedVoteAvg = String.format("%.1f", vote ?: 0.0f)
-            binding.knownForActors.text = "\nKnown for:\n\n$title ($lang) $date | $formattedVoteAvg/10\n\n$overview"
+            binding.knownForActors.text = "\nKnown for:\n\n$title $date ($lang) | $formattedVoteAvg/10\n\n$overview"
             val baseUrl = "https://image.tmdb.org/t/p/w500"
             val posterPath = resultActors.profile_path
             var imageUrl = "$baseUrl$posterPath"

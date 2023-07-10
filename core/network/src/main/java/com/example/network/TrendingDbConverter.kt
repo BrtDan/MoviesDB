@@ -14,7 +14,8 @@ data class TrendingDay(
     val release_date: String?,
     val first_air_date: String?,
     val vote_average: Float,
-    val vote_count: Int
+    val vote_count: Int,
+    val media_type: String
 ) {
     val nameTitle: String
         get() = title ?: name ?: ""

@@ -22,12 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     val viewModel by viewModels<OverviewViewModel>()
-    val viewModel_2 by viewModels<OverviewViewModel_2>()
-    val viewModel_3 by viewModels<OverviewViewModel_3>()
-    val viewModel_4 by viewModels<OverviewViewModel_4>()
-    val viewModel_5 by viewModels<OverviewViewModel_5>()
-    val viewModel_6 by viewModels<OverviewViewModel_6>()
-    val viewModel_7 by viewModels<OverviewViewModel_7>()
 
     private val adapter by lazy { SearchAdapter() }
     private val adapter2 by lazy { SearchAdapterTv() }
@@ -62,13 +56,13 @@ class MainActivity : AppCompatActivity() {
             Picasso.get().load(imageUrl).into(binding.imageMovies3)
 
             binding.imageMovies1.setOnClickListener{
-                putExtra(0)
+                putExtraMoviesDetails(0, language)
             }
             binding.imageMovies2.setOnClickListener{
-                putExtra(1)
+                putExtraMoviesDetails(1, language)
             }
             binding.imageMovies3.setOnClickListener{
-                putExtra(2)
+                putExtraMoviesDetails(2, language)
             }
         }
 
@@ -76,14 +70,14 @@ class MainActivity : AppCompatActivity() {
 
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
-            viewModel_2.getTopRatedTv(language, 1)
+            viewModel.getTopRatedTv(language, 1)
         }
 
 
-        viewModel_2.text.observe(this){
-            binding.tvName1.text = it.tvData?.results?.get(0)?.name
-            binding.tvName2.text = it.tvData?.results?.get(1)?.name
-            binding.tvName3.text = it.tvData?.results?.get(2)?.name
+        viewModel.text.observe(this){
+            binding.tvName1.text = it.tvData?.results?.get(0)?.original_name
+            binding.tvName2.text = it.tvData?.results?.get(1)?.original_name
+            binding.tvName3.text = it.tvData?.results?.get(2)?.original_name
             val baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini tmdb
             var posterPath = it.tvData?.results?.get(0)?.poster_path
             var imageUrl = "$baseUrl$posterPath"
@@ -96,21 +90,21 @@ class MainActivity : AppCompatActivity() {
             Picasso.get().load(imageUrl).into(binding.imageTv3)
 
             binding.imageTv1.setOnClickListener{
-                putExtra_tv(0)
+                putExtraTvDetails(0, language)
             }
             binding.imageTv2.setOnClickListener{
-                putExtra_tv(1)
+                putExtraTvDetails(1, language)
             }
             binding.imageTv3.setOnClickListener{
-                putExtra_tv(2)
+                putExtraTvDetails(2, language)
             }
         }
 
         /*      TRENDING OF THE DAY     */
 
-        viewModel_3.getTrendingDay(language, 1)
+        viewModel.getTrendingDay(language)
 
-        viewModel_3.text.observe(this){
+        viewModel.text.observe(this){
 
             binding.trendingName1.text = it.trendingDay?.results?.get(0)?.nameTitle
             binding.trendingName2.text = it.trendingDay?.results?.get(1)?.nameTitle
@@ -136,30 +130,30 @@ class MainActivity : AppCompatActivity() {
             Picasso.get().load(imageUrl).into(binding.imageTrending5)
 
             binding.imageTrending1.setOnClickListener{
-                putExtra_trending(0)
+                putExtraTrendingDetails(0, language)
             }
             binding.imageTrending2.setOnClickListener{
-                putExtra_trending(1)
+                putExtraTrendingDetails(1, language)
             }
             binding.imageTrending3.setOnClickListener{
-                putExtra_trending(2)
+                putExtraTrendingDetails(2, language)
             }
             binding.imageTrending4.setOnClickListener{
-                putExtra_trending(3)
+                putExtraTrendingDetails(3, language)
             }
             binding.imageTrending5.setOnClickListener{
-                putExtra_trending(4)
+                putExtraTrendingDetails(4, language)
             }
         }
 
         /*    TRENDING ACTORS OF THE WEEK     */
 
-        viewModel_4.getTrendingWeek(language)
-        viewModel_4.text.observe(this){
+        viewModel.getTrendingWeek(language)
+        viewModel.text.observe(this){
             binding.trendingWeekName1.text = it.trendingWeek?.results?.get(0)?.name
             binding.trendingWeekName2.text = it.trendingWeek?.results?.get(1)?.name
             binding.trendingWeekName3.text = it.trendingWeek?.results?.get(2)?.name
-            binding.trendingWeekName4.text = it.trendingWeek?.results?.get(5)?.name
+            binding.trendingWeekName4.text = it.trendingWeek?.results?.get(3)?.name
             binding.trendingWeekName5.text = it.trendingWeek?.results?.get(4)?.name
 
             val baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini tmdb
@@ -172,7 +166,7 @@ class MainActivity : AppCompatActivity() {
             posterPath = it.trendingWeek?.results?.get(2)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek3)
-            posterPath = it.trendingWeek?.results?.get(5)?.profile_path
+            posterPath = it.trendingWeek?.results?.get(3)?.profile_path
             imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek4)
             posterPath = it.trendingWeek?.results?.get(4)?.profile_path
@@ -180,19 +174,19 @@ class MainActivity : AppCompatActivity() {
             Picasso.get().load(imageUrl).into(binding.imageTrendingWeek5)
 
             binding.imageTrendingWeek1.setOnClickListener{
-                putExtra_trendingWeek(0)
+                putExtraTrendingWeekDetails(0, language)
             }
             binding.imageTrendingWeek2.setOnClickListener{
-                putExtra_trendingWeek(1)
+                putExtraTrendingWeekDetails(1, language)
             }
             binding.imageTrendingWeek3.setOnClickListener{
-                putExtra_trendingWeek(2)
+                putExtraTrendingWeekDetails(2, language)
             }
             binding.imageTrendingWeek4.setOnClickListener{
-                putExtra_trendingWeek(5)
+                putExtraTrendingWeekDetails(3, language)
             }
             binding.imageTrendingWeek5.setOnClickListener{
-                putExtra_trendingWeek(4)
+                putExtraTrendingWeekDetails(4, language)
             }
         }
 
@@ -230,8 +224,8 @@ class MainActivity : AppCompatActivity() {
         binding.searchBarText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if(binding.radioMovies.isChecked){
-                    viewModel_5.searchMovie(query, language)
-                    viewModel_5.text.observe(this@MainActivity){
+                    viewModel.searchMovie(query, language)
+                    viewModel.text.observe(this@MainActivity){
                         binding.searchTv.visibility = View.GONE
                         binding.searchItem.visibility = View.VISIBLE
                         binding.searchActors.visibility = View.GONE
@@ -239,8 +233,8 @@ class MainActivity : AppCompatActivity() {
                         adapter.submitList(searchList)
                     }
                 } else if (binding.radioTvSeries.isChecked){
-                    viewModel_6.searchTv(query, language)
-                    viewModel_6.text.observe(this@MainActivity){
+                    viewModel.searchTv(query, language)
+                    viewModel.text.observe(this@MainActivity){
                         binding.searchItem.visibility = View.GONE
                         binding.searchTv.visibility = View.VISIBLE
                         binding.searchActors.visibility = View.GONE
@@ -248,8 +242,8 @@ class MainActivity : AppCompatActivity() {
                         adapter2.submitList(searchList)
                     }
                 } else {
-                    viewModel_7.searchActors(query, language)
-                    viewModel_7.text.observe(this@MainActivity){
+                    viewModel.searchActors(query, language)
+                    viewModel.text.observe(this@MainActivity){
                         binding.searchTv.visibility = View.GONE
                         binding.searchItem.visibility = View.GONE
                         binding.searchActors.visibility = View.VISIBLE
@@ -266,68 +260,43 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun putExtra(n: Int){
+    fun putExtraMoviesDetails(n: Int, language: String){
         viewModel.text.observe(this) {
             val intent = Intent(this, movieTopRatedActivity::class.java)
-            intent.putExtra("originalTitle", it.movieData?.results?.get(n)?.title.toString())
-            intent.putExtra("originalLang", it.movieData?.results?.get(n)?.original_language.toString())
-            intent.putExtra("releaseDate", it.movieData?.results?.get(n)?.release_date.toString())
-            intent.putExtra("overview", it.movieData?.results?.get(n)?.overview.toString())
-            intent.putExtra("vote_count", it.movieData?.results?.get(n)?.vote_count.toString())
-            intent.putExtra("voteAvg", it.movieData?.results?.get(n)?.vote_average.toString())
-            intent.putExtra("urlImg", it.movieData?.results?.get(n)?.poster_path)
+            intent.putExtra("id", it.movieData?.results?.get(n)?.id.toString())
+            intent.putExtra("language", language)
+            intent.putExtra("type", "movie")
             startActivity(intent)
         }
     }
 
-    fun putExtra_tv(n: Int){
-        viewModel_2.text.observe(this) {
+    fun putExtraTvDetails(n: Int, language: String){
+        viewModel.text.observe(this) {
             val intent = Intent(this, movieTopRatedActivity::class.java)
-            intent.putExtra("originalTitle", it.tvData?.results?.get(n)?.name.toString())
-            intent.putExtra("originalLang", it.tvData?.results?.get(n)?.original_language.toString())
-            intent.putExtra("releaseDate", it.tvData?.results?.get(n)?.first_air_date.toString())
-            intent.putExtra("overview", it.tvData?.results?.get(n)?.overview.toString())
-            intent.putExtra("vote_count", it.tvData?.results?.get(n)?.vote_count.toString())
-            intent.putExtra("voteAvg", it.tvData?.results?.get(n)?.vote_average.toString())
-            intent.putExtra("urlImg", it.tvData?.results?.get(n)?.poster_path)
+            intent.putExtra("id", it.tvData?.results?.get(n)?.id.toString())
+            intent.putExtra("language", language)
+            intent.putExtra("type", "tv")
             startActivity(intent)
         }
     }
 
-    fun putExtra_trending(n: Int){
-        viewModel_3.text.observe(this) {
+    fun putExtraTrendingDetails(n: Int, language: String){
+        viewModel.text.observe(this) {
             val intent = Intent(this, movieTopRatedActivity::class.java)
-            intent.putExtra("originalTitle", it.trendingDay?.results?.get(n)?.nameTitle.toString())
-            intent.putExtra("originalLang", it.trendingDay?.results?.get(n)?.original_language.toString())
-            intent.putExtra("releaseDate", it.trendingDay?.results?.get(n)?.releaseDate.toString())
-            intent.putExtra("overview", it.trendingDay?.results?.get(n)?.overview.toString())
-            intent.putExtra("vote_count", it.trendingDay?.results?.get(n)?.vote_count.toString())
-            intent.putExtra("voteAvg", it.trendingDay?.results?.get(n)?.vote_average.toString())
-            intent.putExtra("urlImg", it.trendingDay?.results?.get(n)?.poster_path)
+            intent.putExtra("id", it.trendingDay?.results?.get(n)?.id.toString())
+            intent.putExtra("language", language)
+            intent.putExtra("type", "trendDay")
+            intent.putExtra("typeTrend", it.trendingDay?.results?.get(n)?.media_type)
             startActivity(intent)
         }
     }
 
-    fun putExtra_trendingWeek(n: Int){
-        viewModel_4.text.observe(this) {
+    fun putExtraTrendingWeekDetails(n: Int, language: String){
+        viewModel.text.observe(this) {
             val intent = Intent(this, actorTopRatedActivity::class.java)
-            intent.putExtra("name", it.trendingWeek?.results?.get(n)?.name.toString())
-            intent.putExtra("title1", it.trendingWeek?.results?.get(n)?.known_for?.get(0)?.title.toString())
-            intent.putExtra("title2", it.trendingWeek?.results?.get(n)?.known_for?.get(1)?.title.toString())
-            intent.putExtra("title3", it.trendingWeek?.results?.get(n)?.known_for?.get(2)?.title.toString())
-            intent.putExtra("releaseDate1", it.trendingWeek?.results?.get(n)?.known_for?.get(0)?.release_date.toString())
-            intent.putExtra("releaseDate2", it.trendingWeek?.results?.get(n)?.known_for?.get(1)?.release_date.toString())
-            intent.putExtra("releaseDate3", it.trendingWeek?.results?.get(n)?.known_for?.get(2)?.release_date.toString())
-            intent.putExtra("overview1", it.trendingWeek?.results?.get(n)?.known_for?.get(0)?.overview.toString())
-            intent.putExtra("overview2", it.trendingWeek?.results?.get(n)?.known_for?.get(1)?.overview.toString())
-            intent.putExtra("overview3", it.trendingWeek?.results?.get(n)?.known_for?.get(2)?.overview.toString())
-            intent.putExtra("urlImg", it.trendingWeek?.results?.get(n)?.profile_path)
-            intent.putExtra("vote_average1", it.trendingWeek?.results?.get(n)?.known_for?.get(0)?.vote_average.toString())
-            intent.putExtra("vote_average2", it.trendingWeek?.results?.get(n)?.known_for?.get(1)?.vote_average.toString())
-            intent.putExtra("vote_average3", it.trendingWeek?.results?.get(n)?.known_for?.get(2)?.vote_average.toString())
-            intent.putExtra("original_language1", it.trendingWeek?.results?.get(n)?.known_for?.get(0)?.original_language.toString())
-            intent.putExtra("original_language2", it.trendingWeek?.results?.get(n)?.known_for?.get(1)?.original_language.toString())
-            intent.putExtra("original_language3", it.trendingWeek?.results?.get(n)?.known_for?.get(2)?.original_language.toString())
+            intent.putExtra("id", it.trendingWeek?.results?.get(n)?.id.toString())
+            intent.putExtra("language", language)
+            intent.putExtra("type", "trendWeek")
             startActivity(intent)
         }
     }

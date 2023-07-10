@@ -45,11 +45,11 @@ class SearchAdapterTv: ListAdapter<ResultTvSearch, SearchAdapterTv.SearchTvViewH
             val overview : String? = resultTvSearch.overview
             val vote : Float? = resultTvSearch.vote_average
             val formattedVoteAvg = String.format("%.1f", vote ?: 0.0f)
-            binding.dataLangOverviewVoteTv.text = "$date ($lang) n$formattedVoteAvg/10\n\n$overview"
+            binding.dataLangOverviewVoteTv.text = "$date ($lang) | $formattedVoteAvg/10\n\n$overview"
             val baseUrl = "https://image.tmdb.org/t/p/w500"
             val posterPath = resultTvSearch.poster_path
             var imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imgSearchTvSeries)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgSearchTvSeries)
         }
     }
 }

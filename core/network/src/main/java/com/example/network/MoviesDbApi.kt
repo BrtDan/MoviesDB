@@ -1,6 +1,7 @@
 package com.example.network
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesDbApi {
@@ -10,6 +11,24 @@ interface MoviesDbApi {
         @Query(value = "page") page: Int
     ) : MoviesConvert
 
+    @GET("movie/{id}")
+    suspend fun getDetailsMovies(
+        @Path("id") id: Int,
+        @Query("language") language: String
+    ): MoviesDetailsConvert
+
+    @GET("tv/{id}")
+    suspend fun getDetailsTv(
+        @Path("id") id: Int,
+        @Query("language") language: String
+    ): TvDetailsConvert
+
+    @GET("person/{id}")
+    suspend fun getDetailsTrendingWeek(
+        @Path("id") id: Int,
+        @Query("language") language: String
+    ): TrendingWeekDetailsConvert
+
     @GET("tv/top_rated")
     suspend fun getTopRatedTv(
         @Query(value = "language") language: String,
@@ -18,8 +37,7 @@ interface MoviesDbApi {
 
     @GET("trending/all/day?")
     suspend fun getTrendingDay(
-        @Query(value = "language") language: String,
-        @Query(value = "page") page: Int
+        @Query(value = "language") language: String
     ): TrendingConvert
 
     @GET("trending/person/week?")

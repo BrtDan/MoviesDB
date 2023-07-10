@@ -10,16 +10,28 @@ class MoviesDbRepository @Inject constructor(
         return moviesService.getTopRatedMovies(language, page)
     }
 
+    suspend fun getDetailsMovies(id: Int, language: String): MoviesDetailsConvert {
+        return moviesService.getDetailsMovies(id, language)
+    }
+
+    suspend fun getDetailsTv(id: Int, language: String): TvDetailsConvert {
+        return moviesService.getDetailsTv(id, language)
+    }
+
     suspend fun getTopRatedTv(language: String, page: Int): TvConvert{
         return moviesService.getTopRatedTv(language, page)
     }
 
-    suspend fun getTrendingDay(language: String, page: Int): TrendingConvert{
-        return moviesService.getTrendingDay(language, page)
+    suspend fun getTrendingDay(language: String): TrendingConvert{
+        return moviesService.getTrendingDay(language)
     }
 
     suspend fun getTrendingWeek(language: String): TrendingWeekConvert{
         return moviesService.getTrendingWeek(language)
+    }
+
+    suspend fun getDetailsTrendingWeek(id: Int, language: String): TrendingWeekDetailsConvert{
+        return moviesService.getDetailsTrendingWeek(id, language)
     }
 
     suspend fun searchMovie(language: String, name: String): MoviesSearchConvert {
