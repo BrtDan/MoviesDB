@@ -14,6 +14,4 @@ L'app utilizza l'API di The Movie Database (TMDB) per ottenere i dati.
 ## Tecnologie utilizzate
 
 - Linguaggio di programmazione: Kotlin
-- Android Jetpack components: ViewModel, LiveData, RecyclerView
-- Architettura: Model-View-ViewModel (MVVM)
 - API utilizzata per il recupero dei dati: [The Movie Database (TMDB) API](https://www.themoviedb.org/documentation/api)
