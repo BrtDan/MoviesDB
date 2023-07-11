@@ -49,7 +49,7 @@ class SearchAdapterActors: ListAdapter<ActorsSearch, SearchAdapterActors.SearchA
             val baseUrl = "https://image.tmdb.org/t/p/w500"
             val posterPath = resultActors.profile_path
             var imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imgSearchActors)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgSearchActors)
         }
     }
 }

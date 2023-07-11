@@ -12,9 +12,9 @@ data class TrendingActors(
 )
 
 data class knownFor(
-    val title: String,
-    val original_language: String,
-    val overview: String,
-    val release_date: String,
-    val vote_average: Float
+    val title: String?,
+    val original_language: String?,
+    val overview: String?,
+    val release_date: String?,
+    val vote_average: Float?
 )

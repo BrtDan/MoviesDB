@@ -1,6 +1,8 @@
 package com.example.network.di
 
 import android.content.Context
+import androidx.room.Room
+import com.example.network.MoviesDatabase
 import com.example.network.MoviesDbApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -58,5 +60,16 @@ object NetworkModule {
             .baseUrl("https://api.themoviedb.org/3/")
             .build()
             .create(MoviesDbApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoviesDB(
+        @ApplicationContext context: Context
+    ) : MoviesDatabase {
+        return Room.databaseBuilder(
+            context,
+            MoviesDatabase::class.java, "Movies-DB"
+        ).fallbackToDestructiveMigration().build()
     }
 }

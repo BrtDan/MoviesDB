@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
 import com.example.moviesdb.databinding.ActivityMainBinding
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.actorstrendingweek.actorTopRatedActivity
 import com.example.settings.settingActivity
@@ -16,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -23,7 +26,39 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     val viewModel by viewModels<OverviewViewModel>()
 
-    private val adapter by lazy { SearchAdapter() }
+    private val adapter by lazy {
+        SearchAdapter(
+
+            checkIfIsFavourite = { movie ->
+                val id: Int = movie.id.toString().toInt()
+                var isFavourite: Int = 0
+                val coroutineScope = lifecycleScope
+                coroutineScope.launch {
+                    isFavourite = withContext(Dispatchers.IO) {
+                        viewModel.checkIfIsFavourite(id)
+                    }
+                }
+                isFavourite // FIXME: RESTITUISCE SEMPRE 0, PROBABILMENTE RESTITUISCE IL VALORE 0 (QUELLO DI DEFAULT) PRIMA CHE POSSA ARRIVARE IN FONDO ALLA QUERY
+            },
+
+            onClickStar = {
+                Toast.makeText(this, "${it.title} inserito tra i preferiti", Toast.LENGTH_LONG)
+                    .show()
+                val coroutineScope = CoroutineScope(Dispatchers.Main)
+                coroutineScope.launch {
+                    viewModel.insertIntoDB(
+                        it.id.toString().toInt(),
+                        it.title.toString(),
+                        it.release_date.toString(),
+                        it.poster_path.toString(),
+                        it.original_language.toString(),
+                        it.overview.toString(),
+                        it.vote_average.toString().toFloat()
+                    )
+                }
+            }
+        )
+    }
     private val adapter2 by lazy { SearchAdapterTv() }
     private val adapter3 by lazy { SearchAdapterActors() }
 
@@ -32,8 +67,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.searchBar.visibility = View.GONE
-        var state = "close"
 
+        var state = "close"
         val language = "en-US"
 
         /*      TOP RATED MOVIES        */
@@ -47,55 +82,57 @@ class MainActivity : AppCompatActivity() {
             val baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini tmdb
             var posterPath = it.movieData?.results?.get(0)?.poster_path
             var imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageMovies1)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageMovies1)
             posterPath = it.movieData?.results?.get(1)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageMovies2)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageMovies2)
             posterPath = it.movieData?.results?.get(2)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageMovies3)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageMovies3)
 
-            binding.imageMovies1.setOnClickListener{
+            binding.imageMovies1.setOnClickListener {
                 putExtraMoviesDetails(0, language)
             }
-            binding.imageMovies2.setOnClickListener{
+            binding.imageMovies2.setOnClickListener {
                 putExtraMoviesDetails(1, language)
             }
-            binding.imageMovies3.setOnClickListener{
+            binding.imageMovies3.setOnClickListener {
                 putExtraMoviesDetails(2, language)
             }
         }
 
         /*      TOP RATED TV SERIES     */
 
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
-        coroutineScope.launch {
-            viewModel.getTopRatedTv(language, 1)
-        }
+        viewModel.getTopRatedTv(language, 1)
 
-
-        viewModel.text.observe(this){
+        viewModel.text_RatedTv.observe(this) {
             binding.tvName1.text = it.tvData?.results?.get(0)?.original_name
             binding.tvName2.text = it.tvData?.results?.get(1)?.original_name
             binding.tvName3.text = it.tvData?.results?.get(2)?.original_name
             val baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini tmdb
             var posterPath = it.tvData?.results?.get(0)?.poster_path
             var imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTv1)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTv1)
             posterPath = it.tvData?.results?.get(1)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTv2)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTv2)
             posterPath = it.tvData?.results?.get(2)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTv3)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTv3)
 
-            binding.imageTv1.setOnClickListener{
+            binding.imageTv1.setOnClickListener {
                 putExtraTvDetails(0, language)
             }
-            binding.imageTv2.setOnClickListener{
+            binding.imageTv2.setOnClickListener {
                 putExtraTvDetails(1, language)
             }
-            binding.imageTv3.setOnClickListener{
+            binding.imageTv3.setOnClickListener {
                 putExtraTvDetails(2, language)
             }
         }
@@ -104,7 +141,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getTrendingDay(language)
 
-        viewModel.text.observe(this){
+        viewModel.text_TrendDay.observe(this) {
 
             binding.trendingName1.text = it.trendingDay?.results?.get(0)?.nameTitle
             binding.trendingName2.text = it.trendingDay?.results?.get(1)?.nameTitle
@@ -115,33 +152,38 @@ class MainActivity : AppCompatActivity() {
             val baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini tmdb
             var posterPath = it.trendingDay?.results?.get(0)?.poster_path
             var imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrending1)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrending1)
             posterPath = it.trendingDay?.results?.get(1)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrending2)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrending2)
             posterPath = it.trendingDay?.results?.get(2)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrending3)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrending3)
             posterPath = it.trendingDay?.results?.get(3)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrending4)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrending4)
             posterPath = it.trendingDay?.results?.get(4)?.poster_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrending5)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrending5)
 
-            binding.imageTrending1.setOnClickListener{
+            binding.imageTrending1.setOnClickListener {
                 putExtraTrendingDetails(0, language)
             }
-            binding.imageTrending2.setOnClickListener{
+            binding.imageTrending2.setOnClickListener {
                 putExtraTrendingDetails(1, language)
             }
-            binding.imageTrending3.setOnClickListener{
+            binding.imageTrending3.setOnClickListener {
                 putExtraTrendingDetails(2, language)
             }
-            binding.imageTrending4.setOnClickListener{
+            binding.imageTrending4.setOnClickListener {
                 putExtraTrendingDetails(3, language)
             }
-            binding.imageTrending5.setOnClickListener{
+            binding.imageTrending5.setOnClickListener {
                 putExtraTrendingDetails(4, language)
             }
         }
@@ -149,7 +191,7 @@ class MainActivity : AppCompatActivity() {
         /*    TRENDING ACTORS OF THE WEEK     */
 
         viewModel.getTrendingWeek(language)
-        viewModel.text.observe(this){
+        viewModel.text_TrendWeek.observe(this) {
             binding.trendingWeekName1.text = it.trendingWeek?.results?.get(0)?.name
             binding.trendingWeekName2.text = it.trendingWeek?.results?.get(1)?.name
             binding.trendingWeekName3.text = it.trendingWeek?.results?.get(2)?.name
@@ -159,40 +201,45 @@ class MainActivity : AppCompatActivity() {
             val baseUrl = "https://image.tmdb.org/t/p/w500" // BASE URL immagini tmdb
             var posterPath = it.trendingWeek?.results?.get(0)?.profile_path
             var imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrendingWeek1)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrendingWeek1)
             posterPath = it.trendingWeek?.results?.get(1)?.profile_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrendingWeek2)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrendingWeek2)
             posterPath = it.trendingWeek?.results?.get(2)?.profile_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrendingWeek3)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrendingWeek3)
             posterPath = it.trendingWeek?.results?.get(3)?.profile_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrendingWeek4)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrendingWeek4)
             posterPath = it.trendingWeek?.results?.get(4)?.profile_path
             imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imageTrendingWeek5)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                .error(R.drawable.placeholder_view).into(binding.imageTrendingWeek5)
 
-            binding.imageTrendingWeek1.setOnClickListener{
+            binding.imageTrendingWeek1.setOnClickListener {
                 putExtraTrendingWeekDetails(0, language)
             }
-            binding.imageTrendingWeek2.setOnClickListener{
+            binding.imageTrendingWeek2.setOnClickListener {
                 putExtraTrendingWeekDetails(1, language)
             }
-            binding.imageTrendingWeek3.setOnClickListener{
+            binding.imageTrendingWeek3.setOnClickListener {
                 putExtraTrendingWeekDetails(2, language)
             }
-            binding.imageTrendingWeek4.setOnClickListener{
+            binding.imageTrendingWeek4.setOnClickListener {
                 putExtraTrendingWeekDetails(3, language)
             }
-            binding.imageTrendingWeek5.setOnClickListener{
+            binding.imageTrendingWeek5.setOnClickListener {
                 putExtraTrendingWeekDetails(4, language)
             }
         }
 
         /* CLICK SULL'IMG LIST */
-        binding.list.setOnClickListener{
-            if(state == "open"){
+        binding.list.setOnClickListener {
+            if (state == "open") {
                 binding.list.setImageResource(R.drawable.baseline_tune_white_48)
                 binding.body.visibility = View.VISIBLE
                 binding.searchBar.visibility = View.GONE
@@ -205,7 +252,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         /* CLICK SULL'IMG SEARCH */
-        binding.search.setOnClickListener{
+        binding.search.setOnClickListener {
             binding.list.setImageResource(R.drawable.baseline_close_white_48)
             binding.body.visibility = View.GONE
             binding.searchBar.visibility = View.VISIBLE
@@ -223,18 +270,18 @@ class MainActivity : AppCompatActivity() {
 
         binding.searchBarText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                if(binding.radioMovies.isChecked){
+                if (binding.radioMovies.isChecked) {
                     viewModel.searchMovie(query, language)
-                    viewModel.text.observe(this@MainActivity){
+                    viewModel.text_SearchMovie.observe(this@MainActivity) {
                         binding.searchTv.visibility = View.GONE
                         binding.searchItem.visibility = View.VISIBLE
                         binding.searchActors.visibility = View.GONE
                         val searchList = it.movieSearch?.results
                         adapter.submitList(searchList)
                     }
-                } else if (binding.radioTvSeries.isChecked){
+                } else if (binding.radioTvSeries.isChecked) {
                     viewModel.searchTv(query, language)
-                    viewModel.text.observe(this@MainActivity){
+                    viewModel.text_SearchTv.observe(this@MainActivity) {
                         binding.searchItem.visibility = View.GONE
                         binding.searchTv.visibility = View.VISIBLE
                         binding.searchActors.visibility = View.GONE
@@ -243,7 +290,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     viewModel.searchActors(query, language)
-                    viewModel.text.observe(this@MainActivity){
+                    viewModel.text_SearchAct.observe(this@MainActivity) {
                         binding.searchTv.visibility = View.GONE
                         binding.searchItem.visibility = View.GONE
                         binding.searchActors.visibility = View.VISIBLE
@@ -253,14 +300,14 @@ class MainActivity : AppCompatActivity() {
                 }
                 return true
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
             }
         })
-
     }
 
-    fun putExtraMoviesDetails(n: Int, language: String){
+    fun putExtraMoviesDetails(n: Int, language: String) {
         viewModel.text.observe(this) {
             val intent = Intent(this, movieTopRatedActivity::class.java)
             intent.putExtra("id", it.movieData?.results?.get(n)?.id.toString())
@@ -270,8 +317,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun putExtraTvDetails(n: Int, language: String){
-        viewModel.text.observe(this) {
+    fun putExtraTvDetails(n: Int, language: String) {
+        viewModel.text_RatedTv.observe(this) {
             val intent = Intent(this, movieTopRatedActivity::class.java)
             intent.putExtra("id", it.tvData?.results?.get(n)?.id.toString())
             intent.putExtra("language", language)
@@ -280,8 +327,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun putExtraTrendingDetails(n: Int, language: String){
-        viewModel.text.observe(this) {
+    fun putExtraTrendingDetails(n: Int, language: String) {
+        viewModel.text_TrendDay.observe(this) {
             val intent = Intent(this, movieTopRatedActivity::class.java)
             intent.putExtra("id", it.trendingDay?.results?.get(n)?.id.toString())
             intent.putExtra("language", language)
@@ -291,8 +338,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun putExtraTrendingWeekDetails(n: Int, language: String){
-        viewModel.text.observe(this) {
+    fun putExtraTrendingWeekDetails(n: Int, language: String) {
+        viewModel.text_TrendWeek.observe(this) {
             val intent = Intent(this, actorTopRatedActivity::class.java)
             intent.putExtra("id", it.trendingWeek?.results?.get(n)?.id.toString())
             intent.putExtra("language", language)

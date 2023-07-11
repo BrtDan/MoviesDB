@@ -1,11 +1,15 @@
 package com.example.network
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MoviesDbRepository @Inject constructor(
     private val moviesService: MoviesDbApi,
-    private val moviesSearchService: MoviesDbApi
+    private val moviesSearchService: MoviesDbApi,
+    private val databaseMovies: MoviesDatabase
 ) {
+
     suspend fun getTopRatedMovies(language: String, page: Int): MoviesConvert {
         return moviesService.getTopRatedMovies(language, page)
     }
@@ -46,4 +50,15 @@ class MoviesDbRepository @Inject constructor(
         return moviesService.searchActors(language, name)
     }
 
+    suspend fun checkIfIsFavourite(id: Int) : Int{
+        return withContext(Dispatchers.IO) {
+            databaseMovies.moviesDao().checkIfIsFavourite(id)
+        }
+    }
+
+    suspend fun insertIntoDB(id: Int, name: String, release_date: String, posterPath: String, original_lang: String, overview: String, vote_avg: Float) {
+        withContext(Dispatchers.IO) {
+            databaseMovies.moviesDao().insert(toEntity(id, name, release_date, posterPath, original_lang, overview, vote_avg))
+        }
+    }
 }

@@ -18,7 +18,7 @@ class movieTopRatedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val type = intent.getStringExtra("type").toString()
+        val type : String? = intent.getStringExtra("type")
 
         val id : Int = intent.getStringExtra("id").toString().toInt()
         val language : String = intent.getStringExtra("language").toString()
@@ -51,7 +51,7 @@ class movieTopRatedActivity : AppCompatActivity() {
             println("TV")
             binding.imageView.visibility = View.VISIBLE
             viewModel.getDetailsTv(id, language)
-            viewModel.text.observe(this){
+            viewModel.textTv.observe(this){
                 val baseUrl = "https://image.tmdb.org/t/p/w500"
                 val posterPath = it.tvsData?.poster_path
                 var imageUrl = "$baseUrl$posterPath"
@@ -99,11 +99,11 @@ class movieTopRatedActivity : AppCompatActivity() {
             } else{
                 binding.imageView.visibility = View.VISIBLE
                 viewModel.getDetailsTv(id, language)
-                viewModel.text.observe(this){
+                viewModel.textTv.observe(this){
                     val baseUrl = "https://image.tmdb.org/t/p/w500"
                     val posterPath = it.tvsData?.poster_path
                     var imageUrl = "$baseUrl$posterPath"
-                    Picasso.get().load(imageUrl).into(binding.imgMovie)
+                    Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgMovie)
 
                     val originalTitle = it.tvsData?.original_name
                     val originalLang = it.tvsData?.original_language

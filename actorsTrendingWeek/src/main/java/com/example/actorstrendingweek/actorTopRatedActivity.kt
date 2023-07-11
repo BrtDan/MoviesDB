@@ -24,7 +24,7 @@ class actorTopRatedActivity : AppCompatActivity() {
             val baseUrl = "https://image.tmdb.org/t/p/w500"
             val posterPath = it.trendsWeek?.profile_path
             var imageUrl = "$baseUrl$posterPath"
-            Picasso.get().load(imageUrl).into(binding.imgActors)
+            Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgActors)
 
             binding.nameActors.text = it.trendsWeek?.name
             binding.knownFor.text = it.trendsWeek?.biography

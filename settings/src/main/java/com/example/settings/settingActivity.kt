@@ -14,7 +14,5 @@ class settingActivity : AppCompatActivity() {
         binding.list.setOnClickListener{
             finish()
         }
-
     }
-
 }

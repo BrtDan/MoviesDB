@@ -30,6 +30,9 @@ class moviesTopRatedViewModel @Inject constructor(
     private val _text = MutableLiveData<Response>()
     val text: LiveData<Response> = _text
 
+    private val _textTv = MutableLiveData<Response>()
+    val textTv: LiveData<Response> = _textTv
+
     fun getDetailsMovies(id: Int, language: String) {
         viewModelScope.launch {
             _text.value = Response(isLoading = true, moviesData = null, tvsData = null, trendsWeek = null)
@@ -38,11 +41,13 @@ class moviesTopRatedViewModel @Inject constructor(
         }
     }
 
+
+
     fun getDetailsTv(id: Int, language: String) {
         viewModelScope.launch {
-            _text.value = Response(isLoading = true, moviesData = null, tvsData = null, trendsWeek = null)
+            _textTv.value = Response(isLoading = true, moviesData = null, tvsData = null, trendsWeek = null)
             val tv = moviesDbRepository.getDetailsTv(id, language)
-            _text.value = Response(isLoading = false, moviesData = null, tvsData = tv, trendsWeek = null)
+            _textTv.value = Response(isLoading = false, moviesData = null, tvsData = tv, trendsWeek = null)
         }
     }
 }
