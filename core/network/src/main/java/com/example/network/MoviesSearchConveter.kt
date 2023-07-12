@@ -1,5 +1,14 @@
 package com.example.network
 
+import com.squareup.moshi.Json
+
+data class WrapperMovie(
+    val search: ResultSearch,
+    val isFavourite: Boolean
+)
+
+fun MoviesSearchConvert.asWrapper() = this.results.map { WrapperMovie(search = it, isFavourite = false) }
+
 data class MoviesSearchConvert(
     val results: List<ResultSearch>
 )

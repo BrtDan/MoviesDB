@@ -8,19 +8,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesdb.databinding.SearchItemTvBinding
 import com.example.network.ResultTvSearch
+import com.example.network.WrapperTv
 import com.squareup.picasso.Picasso
 
-class SearchAdapterTv: ListAdapter<ResultTvSearch, SearchAdapterTv.SearchTvViewHolder>(
+class SearchAdapterTv(
+    private val onClickStar: (movie: ResultTvSearch) -> Unit,
+    private val checkIfIsFavourite: (movie: ResultTvSearch) -> Unit,
+    private val onClickDel: (movie: ResultTvSearch) -> Unit
+): ListAdapter<WrapperTv, SearchAdapterTv.SearchTvViewHolder>(
     DIFF_CALLBACK
 ) {
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultTvSearch>() {
-            override fun areItemsTheSame(oldItem: ResultTvSearch, newItem: ResultTvSearch): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<WrapperTv>() {
+            override fun areItemsTheSame(oldItem: WrapperTv, newItem: WrapperTv): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: ResultTvSearch, newItem: ResultTvSearch): Boolean {
+            override fun areContentsTheSame(oldItem: WrapperTv, newItem: WrapperTv): Boolean {
                 return areItemsTheSame(oldItem, newItem)
             }
         }
@@ -36,20 +41,37 @@ class SearchAdapterTv: ListAdapter<ResultTvSearch, SearchAdapterTv.SearchTvViewH
         holder.bind(getItem(position))
     }
 
-    class SearchTvViewHolder(val binding: SearchItemTvBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class SearchTvViewHolder(val binding: SearchItemTvBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(resultTvSearch: ResultTvSearch) {
-            binding.titleSearchTv.text = resultTvSearch.name
-            val date : String? = resultTvSearch.first_air_date
-            val lang : String? = resultTvSearch.original_language
-            val overview : String? = resultTvSearch.overview
-            val vote : Float? = resultTvSearch.vote_average
+        fun bind(Res: WrapperTv) {
+
+            if(Res.isFavourite){
+                binding.favourite.setImageResource(R.drawable.baseline_star_24)
+            } else {
+                binding.favourite.setImageResource(R.drawable.baseline_star_border_24)
+            }
+
+            binding.titleSearchTv.text = Res.searchTv.name
+            val date : String? = Res.searchTv.first_air_date
+            val lang : String? = Res.searchTv.original_language
+            val overview : String? = Res.searchTv.overview
+            val vote : Float? = Res.searchTv.vote_average
             val formattedVoteAvg = String.format("%.1f", vote ?: 0.0f)
             binding.dataLangOverviewVoteTv.text = "$date ($lang) | $formattedVoteAvg/10\n\n$overview"
             val baseUrl = "https://image.tmdb.org/t/p/w500"
-            val posterPath = resultTvSearch.poster_path
+            val posterPath = Res.searchTv.poster_path
             var imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgSearchTvSeries)
+            binding.favourite.setOnClickListener {
+                println(Res.isFavourite)
+                if (Res.isFavourite){
+                    onClickDel(Res.searchTv)
+                    binding.favourite.setImageResource(R.drawable.baseline_star_border_24)
+                } else{
+                    onClickStar(Res.searchTv)
+                    binding.favourite.setImageResource(R.drawable.baseline_star_24)
+                }
+            }
         }
     }
 }

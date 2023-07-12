@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,18 +30,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter by lazy {
         SearchAdapter(
 
-            checkIfIsFavourite = { movie ->
-                val id: Int = movie.id.toString().toInt()
-                var isFavourite: Int = 0
-                val coroutineScope = lifecycleScope
-                coroutineScope.launch {
-                    isFavourite = withContext(Dispatchers.IO) {
-                        viewModel.checkIfIsFavourite(id)
-                    }
-                }
-                isFavourite // FIXME: RESTITUISCE SEMPRE 0, PROBABILMENTE RESTITUISCE IL VALORE 0 (QUELLO DI DEFAULT) PRIMA CHE POSSA ARRIVARE IN FONDO ALLA QUERY
-            },
-
+            checkIfIsFavourite = { viewModel.checkIfIsFavourite(it.id ?: -1) },
             onClickStar = {
                 Toast.makeText(this, "${it.title} inserito tra i preferiti", Toast.LENGTH_LONG)
                     .show()
@@ -53,14 +43,79 @@ class MainActivity : AppCompatActivity() {
                         it.poster_path.toString(),
                         it.original_language.toString(),
                         it.overview.toString(),
-                        it.vote_average.toString().toFloat()
+                        it.vote_average.toString().toFloat(),
+                        "Movies"
                     )
                 }
+            },
+
+            onClickDel = {
+                Toast.makeText(this, "${it.title} eliminato dai preferiti", Toast.LENGTH_LONG)
+                    .show()
+                viewModel.deleteMoviesFromDB( it.id.toString().toInt() )
             }
         )
     }
-    private val adapter2 by lazy { SearchAdapterTv() }
-    private val adapter3 by lazy { SearchAdapterActors() }
+
+    private val adapter2 by lazy {
+        SearchAdapterTv(
+
+            checkIfIsFavourite = { viewModel.checkIfIsFavourite(it.id ?: -1) },
+            onClickStar = {
+                Toast.makeText(this, "${it.name} inserito tra i preferiti", Toast.LENGTH_LONG)
+                    .show()
+                val coroutineScope = CoroutineScope(Dispatchers.Main)
+                coroutineScope.launch {
+                    viewModel.insertIntoDB(
+                        it.id.toString().toInt(),
+                        it.name.toString(),
+                        it.first_air_date.toString(),
+                        it.poster_path.toString(),
+                        it.original_language.toString(),
+                        it.overview.toString(),
+                        it.vote_average.toString().toFloat(),
+                        "Tv"
+                    )
+                }
+            },
+
+            onClickDel = {
+                Toast.makeText(this, "${it.name} eliminato dai preferiti", Toast.LENGTH_LONG)
+                    .show()
+                viewModel.deleteMoviesFromDB( it.id.toString().toInt() )
+            }
+        )
+    }
+
+    private val adapter3 by lazy {
+        SearchAdapterActors(
+
+            checkIfIsFavourite = { viewModel.checkIfIsFavourite(it.id ?: -1) },
+            onClickStar = {
+                Toast.makeText(this, "${it.name} inserito tra i preferiti", Toast.LENGTH_LONG)
+                    .show()
+                val coroutineScope = CoroutineScope(Dispatchers.Main)
+                coroutineScope.launch {
+                    viewModel.insertIntoDB(
+                        it.id.toString().toInt(),
+                        it.name.toString(),
+                        it.known_for?.get(0)?.releaseDate.toString(),
+                        it.profile_path.toString(),
+                        it.known_for?.get(0)?.original_language.toString(),
+                        it.known_for?.get(0)?.overview.toString(),
+                        it.known_for?.get(0)?.vote_average.toString().toFloat(),
+                        "Actors"
+                    )
+                }
+            },
+
+            onClickDel = {
+                Toast.makeText(this, "${it.name} eliminato dai preferiti", Toast.LENGTH_LONG)
+                    .show()
+                viewModel.deleteMoviesFromDB( it.id.toString().toInt() )
+            }
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -276,7 +331,7 @@ class MainActivity : AppCompatActivity() {
                         binding.searchTv.visibility = View.GONE
                         binding.searchItem.visibility = View.VISIBLE
                         binding.searchActors.visibility = View.GONE
-                        val searchList = it.movieSearch?.results
+                        val searchList = it.movieSearch
                         adapter.submitList(searchList)
                     }
                 } else if (binding.radioTvSeries.isChecked) {
@@ -285,7 +340,7 @@ class MainActivity : AppCompatActivity() {
                         binding.searchItem.visibility = View.GONE
                         binding.searchTv.visibility = View.VISIBLE
                         binding.searchActors.visibility = View.GONE
-                        val searchList = it.tvSearch?.results
+                        val searchList = it.tvSearch
                         adapter2.submitList(searchList)
                     }
                 } else {
@@ -294,7 +349,7 @@ class MainActivity : AppCompatActivity() {
                         binding.searchTv.visibility = View.GONE
                         binding.searchItem.visibility = View.GONE
                         binding.searchActors.visibility = View.VISIBLE
-                        val searchList = it.actorsSearch?.results
+                        val searchList = it.actorsSearch
                         adapter3.submitList(searchList)
                     }
                 }

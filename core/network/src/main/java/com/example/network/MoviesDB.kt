@@ -14,6 +14,7 @@ import androidx.room.RoomDatabase
 @Entity
 data class MoviesDB(
     @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "type") val type: String?,
     @ColumnInfo(name = "idProduct") val idProduct: Int?,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "release_date") val release_date: String?,
@@ -23,8 +24,9 @@ data class MoviesDB(
     @ColumnInfo(name = "vote_avg") val vote_avg: Float?
 )
 
-fun toEntity(idProd: Int, nameProd: String, releaseDate: String, posterPath: String?, originalLang: String, overviewProd: String, voteAvg: Float) = MoviesDB(
+fun toEntity(idProd: Int, nameProd: String, releaseDate: String, posterPath: String?, originalLang: String, overviewProd: String, voteAvg: Float, typeOf: String) = MoviesDB(
     id = 0,
+    type = typeOf,
     idProduct = idProd,
     name = nameProd,
     release_date = releaseDate,
@@ -42,6 +44,8 @@ interface MoviesDao {
     @Query("SELECT COUNT(idProduct) FROM MoviesDB WHERE idProduct = :idProduct")
     suspend fun checkIfIsFavourite(idProduct: Int): Int
 
+    @Query("DELETE FROM MoviesDB WHERE idProduct = :id")
+    suspend fun delete(id: Int)
 }
 
 @Database(entities = [MoviesDB::class], version = 1)

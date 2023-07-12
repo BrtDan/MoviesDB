@@ -1,5 +1,13 @@
 package com.example.network
 
+data class WrapperActors(
+    val searchActors: ActorsSearch,
+    val isFavourite: Boolean
+)
+
+fun ActorsSearchConvert.asWrapper() = this.results.map { WrapperActors(searchActors = it, isFavourite = false) }
+
+
 data class ActorsSearchConvert(
     val results: List<ActorsSearch>
 )

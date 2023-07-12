@@ -1,5 +1,14 @@
 package com.example.network
 
+import com.squareup.moshi.Json
+
+data class WrapperTv(
+    val searchTv: ResultTvSearch,
+    val isFavourite: Boolean
+)
+
+fun TvSearchConvert.asWrapper() = this.results.map { WrapperTv(searchTv = it, isFavourite = false) }
+
 data class TvSearchConvert(
     val results: List<ResultTvSearch>
 )

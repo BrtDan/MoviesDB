@@ -51,14 +51,19 @@ class MoviesDbRepository @Inject constructor(
     }
 
     suspend fun checkIfIsFavourite(id: Int) : Int{
-        return withContext(Dispatchers.IO) {
-            databaseMovies.moviesDao().checkIfIsFavourite(id)
+        return databaseMovies.moviesDao().checkIfIsFavourite(id)
+    }
+
+    suspend fun insertIntoDB(id: Int, name: String, release_date: String, posterPath: String, original_lang: String, overview: String, vote_avg: Float, typeMedia: String) {
+        withContext(Dispatchers.IO) {
+            databaseMovies.moviesDao().insert(toEntity(id, name, release_date, posterPath, original_lang, overview, vote_avg, typeMedia))
         }
     }
 
-    suspend fun insertIntoDB(id: Int, name: String, release_date: String, posterPath: String, original_lang: String, overview: String, vote_avg: Float) {
+    suspend fun deleteMoviesFromDB(id: Int) {
         withContext(Dispatchers.IO) {
-            databaseMovies.moviesDao().insert(toEntity(id, name, release_date, posterPath, original_lang, overview, vote_avg))
+            databaseMovies.moviesDao().delete(id)
         }
     }
+
 }
