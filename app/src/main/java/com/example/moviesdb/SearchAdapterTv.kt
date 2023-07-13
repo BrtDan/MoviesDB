@@ -1,6 +1,5 @@
 package com.example.moviesdb
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,9 +11,9 @@ import com.example.network.WrapperTv
 import com.squareup.picasso.Picasso
 
 class SearchAdapterTv(
-    private val onClickStar: (movie: ResultTvSearch) -> Unit,
-    private val checkIfIsFavourite: (movie: ResultTvSearch) -> Unit,
-    private val onClickDel: (movie: ResultTvSearch) -> Unit
+    private val onClickStar: (tv: ResultTvSearch) -> Unit,
+    private val checkIfIsFavourite: (tv: ResultTvSearch) -> Unit,
+    private val onClickDel: (tv: ResultTvSearch) -> Unit
 ): ListAdapter<WrapperTv, SearchAdapterTv.SearchTvViewHolder>(
     DIFF_CALLBACK
 ) {
@@ -62,11 +61,13 @@ class SearchAdapterTv(
             val posterPath = Res.searchTv.poster_path
             var imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgSearchTvSeries)
+
             binding.favourite.setOnClickListener {
                 println(Res.isFavourite)
                 if (Res.isFavourite){
                     onClickDel(Res.searchTv)
                     binding.favourite.setImageResource(R.drawable.baseline_star_border_24)
+
                 } else{
                     onClickStar(Res.searchTv)
                     binding.favourite.setImageResource(R.drawable.baseline_star_24)

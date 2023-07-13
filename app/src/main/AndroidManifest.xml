@@ -32,6 +32,9 @@
         <activity
             android:name="com.example.settings.settingActivity"
             android:exported="true" />
+        <activity
+            android:name="com.example.favourite.favouriteActivity"
+            android:exported="true" />
 
     </application>
 

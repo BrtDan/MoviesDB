@@ -8,18 +8,16 @@ import android.widget.SearchView
 import android.widget.Toast
 import com.example.moviesdb.databinding.ActivityMainBinding
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.actorstrendingweek.actorTopRatedActivity
+import com.example.favourite.favouriteActivity
 import com.example.settings.settingActivity
 import com.example.topRated.movieTopRatedActivity
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -60,13 +58,13 @@ class MainActivity : AppCompatActivity() {
     private val adapter2 by lazy {
         SearchAdapterTv(
 
-            checkIfIsFavourite = { viewModel.checkIfIsFavourite(it.id ?: -1) },
+            checkIfIsFavourite = { viewModel.checkIfIsFavouriteTv(it.id ?: -1) },
             onClickStar = {
                 Toast.makeText(this, "${it.name} inserito tra i preferiti", Toast.LENGTH_LONG)
                     .show()
                 val coroutineScope = CoroutineScope(Dispatchers.Main)
                 coroutineScope.launch {
-                    viewModel.insertIntoDB(
+                    viewModel.insertIntoDBTv(
                         it.id.toString().toInt(),
                         it.name.toString(),
                         it.first_air_date.toString(),
@@ -82,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             onClickDel = {
                 Toast.makeText(this, "${it.name} eliminato dai preferiti", Toast.LENGTH_LONG)
                     .show()
-                viewModel.deleteMoviesFromDB( it.id.toString().toInt() )
+                viewModel.deleteTvFromDB( it.id.toString().toInt() )
             }
         )
     }
@@ -90,13 +88,13 @@ class MainActivity : AppCompatActivity() {
     private val adapter3 by lazy {
         SearchAdapterActors(
 
-            checkIfIsFavourite = { viewModel.checkIfIsFavourite(it.id ?: -1) },
+            checkIfIsFavourite = { viewModel.checkIfIsFavouriteAct(it.id ?: -1) },
             onClickStar = {
                 Toast.makeText(this, "${it.name} inserito tra i preferiti", Toast.LENGTH_LONG)
                     .show()
                 val coroutineScope = CoroutineScope(Dispatchers.Main)
                 coroutineScope.launch {
-                    viewModel.insertIntoDB(
+                    viewModel.insertIntoDBAct(
                         it.id.toString().toInt(),
                         it.name.toString(),
                         it.known_for?.get(0)?.releaseDate.toString(),
@@ -112,10 +110,13 @@ class MainActivity : AppCompatActivity() {
             onClickDel = {
                 Toast.makeText(this, "${it.name} eliminato dai preferiti", Toast.LENGTH_LONG)
                     .show()
-                viewModel.deleteMoviesFromDB( it.id.toString().toInt() )
+                viewModel.deleteActorsFromDB( it.id.toString().toInt() )
             }
         )
     }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -357,9 +358,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                binding.searchItem.visibility = View.GONE
+                binding.searchTv.visibility = View.GONE
+                binding.searchActors.visibility = View.GONE
                 return false
             }
         })
+
+        binding.fav.setOnClickListener {
+            val intent = Intent(this, favouriteActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     fun putExtraMoviesDetails(n: Int, language: String) {

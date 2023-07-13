@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.network.ActorsSearchConvert
 import com.example.network.MoviesConvert
 import com.example.network.MoviesDbRepository
 import com.example.network.TrendingConvert
 import com.example.network.TrendingWeekConvert
 import com.example.network.TvConvert
-import com.example.network.TvSearchConvert
 import com.example.network.WrapperActors
 import com.example.network.WrapperMovie
 import com.example.network.WrapperTv
@@ -55,9 +53,6 @@ class OverviewViewModel @Inject constructor(
 
     private val _text_SearchAct= MutableLiveData<Response>()
     val text_SearchAct: LiveData<Response> = _text_SearchAct
-
-    private val _text_isFavourite= MutableLiveData<Response>()
-    val text_isFavourite: LiveData<Response> = _text_isFavourite
 
     fun getTopRatedMovies(language: String, page: Int) {
         viewModelScope.launch {
@@ -106,27 +101,27 @@ class OverviewViewModel @Inject constructor(
 
     fun searchTv(language: String, name: String) {
         viewModelScope.launch {
-            _text_SearchMovie.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
+            _text_SearchTv.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
             val searchTv = moviesDbRepository.searchTv(language, name)
                 .asWrapper()
                 .map { res ->
                     val isFavourite = moviesDbRepository.checkIfIsFavourite(res.searchTv.id ?: -1)
                     res.copy(isFavourite = isFavourite == 1)
                 }
-            _text_SearchMovie.value = Response(isLoading = false, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = searchTv, actorsSearch = null)
+            _text_SearchTv.value = Response(isLoading = false, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = searchTv, actorsSearch = null)
         }
     }
 
     fun searchActors(language: String, name: String) {
         viewModelScope.launch {
-            _text_SearchMovie.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
+            _text_SearchAct.value = Response(isLoading = true, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = null)
             val searchActors = moviesDbRepository.searchActors(language, name)
                 .asWrapper()
                 .map { res ->
                     val isFavourite = moviesDbRepository.checkIfIsFavourite(res.searchActors.id ?: -1)
                     res.copy(isFavourite = isFavourite == 1)
                 }
-            _text_SearchMovie.value = Response(isLoading = false, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = searchActors)
+            _text_SearchAct.value = Response(isLoading = false, movieData = null, tvData = null, trendingDay = null, trendingWeek = null, movieSearch = null, tvSearch = null, actorsSearch = searchActors)
         }
     }
 
@@ -137,10 +132,38 @@ class OverviewViewModel @Inject constructor(
         }
     }
 
+    fun checkIfIsFavouriteTv(id: Int) {
+        viewModelScope.launch {
+            val isFavourite = moviesDbRepository.checkIfIsFavourite(id)
+            setToFavouriteTv(id, isFavourite = isFavourite == 1)
+        }
+    }
+
+    fun checkIfIsFavouriteAct(id: Int) {
+        viewModelScope.launch {
+            val isFavourite = moviesDbRepository.checkIfIsFavourite(id)
+            setToFavouriteAct(id, isFavourite = isFavourite == 1)
+        }
+    }
+
     fun insertIntoDB(id: Int, name: String, release_date: String, posterPath: String, original_lang: String, overview: String, vote_avg: Float, typeMedia: String) {
         viewModelScope.launch {
             moviesDbRepository.insertIntoDB(id, name, release_date, posterPath, original_lang, overview, vote_avg, typeMedia)
             setToFavourite(id, true)
+        }
+    }
+
+    fun insertIntoDBTv(id: Int, name: String, release_date: String, posterPath: String, original_lang: String, overview: String, vote_avg: Float, typeMedia: String) {
+        viewModelScope.launch {
+            moviesDbRepository.insertIntoDB(id, name, release_date, posterPath, original_lang, overview, vote_avg, typeMedia)
+            setToFavouriteTv(id, true)
+        }
+    }
+
+    fun insertIntoDBAct(id: Int, name: String, release_date: String, posterPath: String, original_lang: String, overview: String, vote_avg: Float, typeMedia: String) {
+        viewModelScope.launch {
+            moviesDbRepository.insertIntoDB(id, name, release_date, posterPath, original_lang, overview, vote_avg, typeMedia)
+            setToFavouriteAct(id, true)
         }
     }
 
@@ -165,10 +188,66 @@ class OverviewViewModel @Inject constructor(
         )
     }
 
+    private fun setToFavouriteTv(id: Int, isFavourite: Boolean) {
+        val newSearchTv = _text_SearchTv.value?.tvSearch.orEmpty()
+            .map { res ->
+                if (res.searchTv.id == id) {
+                    res.copy(isFavourite = isFavourite)
+                } else {
+                    res
+                }
+            }
+        _text_SearchTv.value = Response(
+            isLoading = false,
+            movieData = null,
+            tvData = null,
+            trendingDay = null,
+            trendingWeek = null,
+            movieSearch = null,
+            tvSearch = newSearchTv,
+            actorsSearch = null
+        )
+    }
+
+    private fun setToFavouriteAct(id: Int, isFavourite: Boolean) {
+        val newSearchAct = _text_SearchAct.value?.actorsSearch.orEmpty()
+            .map { res ->
+                if (res.searchActors.id == id) {
+                    res.copy(isFavourite = isFavourite)
+                } else {
+                    res
+                }
+            }
+        _text_SearchAct.value = Response(
+            isLoading = false,
+            movieData = null,
+            tvData = null,
+            trendingDay = null,
+            trendingWeek = null,
+            movieSearch = null,
+            tvSearch = null,
+            actorsSearch = newSearchAct
+        )
+    }
+
     fun deleteMoviesFromDB(id: Int) {
         viewModelScope.launch {
             moviesDbRepository.deleteMoviesFromDB(id)
             setToFavourite(id, false)
+        }
+    }
+
+    fun deleteTvFromDB(id: Int) {
+        viewModelScope.launch {
+            moviesDbRepository.deleteMoviesFromDB(id)
+            setToFavouriteTv(id, false)
+        }
+    }
+
+    fun deleteActorsFromDB(id: Int) {
+        viewModelScope.launch {
+            moviesDbRepository.deleteMoviesFromDB(id)
+            setToFavouriteAct(id, false)
         }
     }
 }

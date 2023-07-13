@@ -1,23 +1,20 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
 }
 
-
 android {
-    namespace 'com.example.moviesdb'
+    namespace 'com.example.favourite'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.moviesdb"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -33,50 +30,33 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-
     buildFeatures {
         viewBinding = true
     }
-    dynamicFeatures = []
 }
 
 dependencies {
-
-//    implementation 'com.eightbitlab:blurview:1.6.6'
-
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-
-    implementation "androidx.recyclerview:recyclerview:"
-    // For control over item selection of both touch and mouse driven selection
-    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
-
-    // Dipendenza picasso
-    implementation 'com.squareup.picasso:picasso:2.8'
 
     // Dipendenze Hilt
     implementation 'com.google.dagger:hilt-android:2.46.1'
     kapt 'com.google.dagger:hilt-compiler:2.46.1'
 
+    // Dipendenza picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
+
     // ViewModels
     implementation 'androidx.fragment:fragment-ktx:1.4.0'
-
-    implementation(project(":core:network"))
-    implementation(project(":core:common"))
-    implementation(project(":favourite"))
-    implementation(project(':moviesTopRated'))
-    implementation(project(':actorsTrendingWeek'))
-    implementation(project(':settings'))
 
     // Dipendenze Retrofit e Moshi
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
 
+    implementation(project(':core:network'))
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.9.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

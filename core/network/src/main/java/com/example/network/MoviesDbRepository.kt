@@ -66,4 +66,8 @@ class MoviesDbRepository @Inject constructor(
         }
     }
 
+    suspend fun getDataFromDB() : List<MoviesDB>?{
+        return databaseMovies.moviesDao().getDataFromDB()
+    }
+
 }
