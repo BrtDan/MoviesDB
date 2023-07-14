@@ -47,7 +47,7 @@ interface MoviesDao {
     @Query("DELETE FROM MoviesDB WHERE idProduct = :id")
     suspend fun delete(id: Int)
 
-    @Query("SELECT * FROM MoviesDB ORDER BY type")
+    @Query("SELECT * FROM MoviesDB ORDER BY type, id")
     suspend fun getDataFromDB(): List<MoviesDB>?
 }
 

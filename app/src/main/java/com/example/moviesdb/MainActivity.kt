@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter by lazy {
         SearchAdapter(
 
-            checkIfIsFavourite = { viewModel.checkIfIsFavourite(it.id ?: -1) },
+            checkIfIsFavourite = { viewModel.checkIfIsFavourite(it.id.toString().toInt()) },
             onClickStar = {
                 Toast.makeText(this, "${it.title} inserito tra i preferiti", Toast.LENGTH_LONG)
                     .show()
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter2 by lazy {
         SearchAdapterTv(
 
-            checkIfIsFavourite = { viewModel.checkIfIsFavouriteTv(it.id ?: -1) },
+            checkIfIsFavourite = { viewModel.checkIfIsFavouriteTv(it.id.toString().toInt()) },
             onClickStar = {
                 Toast.makeText(this, "${it.name} inserito tra i preferiti", Toast.LENGTH_LONG)
                     .show()
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter3 by lazy {
         SearchAdapterActors(
 
-            checkIfIsFavourite = { viewModel.checkIfIsFavouriteAct(it.id ?: -1) },
+            checkIfIsFavourite = { viewModel.checkIfIsFavouriteAct(it.id.toString().toInt()) },
             onClickStar = {
                 Toast.makeText(this, "${it.name} inserito tra i preferiti", Toast.LENGTH_LONG)
                     .show()
@@ -114,9 +114,6 @@ class MainActivity : AppCompatActivity() {
             }
         )
     }
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

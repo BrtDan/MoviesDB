@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.network.MoviesDbRepository
 import com.example.network.MoviesDetailsConvert
-import com.example.network.TrendingConvert
-import com.example.network.TrendingWeekConvert
 import com.example.network.TrendingWeekDetailsConvert
 import com.example.network.TvDetailsConvert
 import dagger.hilt.android.lifecycle.HiltViewModel

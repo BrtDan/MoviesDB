@@ -1,7 +1,5 @@
 package com.example.network
 
-import com.squareup.moshi.Json
-
 data class WrapperMovie(
     val search: ResultSearch,
     val isFavourite: Boolean

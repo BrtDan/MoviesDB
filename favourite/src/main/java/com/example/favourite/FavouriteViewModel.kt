@@ -32,4 +32,10 @@ class FavouriteViewModel @Inject constructor(
         }
     }
 
+    fun deleteFromDB(id: Int){
+        viewModelScope.launch {
+            moviesDbRepository.deleteMoviesFromDB(id)
+        }
+    }
+
 }

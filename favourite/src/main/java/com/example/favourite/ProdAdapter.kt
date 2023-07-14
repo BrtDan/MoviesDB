@@ -1,6 +1,7 @@
 package com.example.favourite
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,7 +10,9 @@ import com.example.favourite.databinding.AllprodBinding
 import com.example.network.MoviesDB
 import com.squareup.picasso.Picasso
 
-class ProdAdapter : ListAdapter<MoviesDB, ProdAdapter.ProdViewHolder>(DIFF_CALLBACK) {
+class ProdAdapter(
+    private val onClickDel: (movie: MoviesDB) -> Unit
+) : ListAdapter<MoviesDB, ProdAdapter.ProdViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MoviesDB>() {
@@ -36,7 +39,6 @@ class ProdAdapter : ListAdapter<MoviesDB, ProdAdapter.ProdViewHolder>(DIFF_CALLB
     inner class ProdViewHolder(private val binding: AllprodBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MoviesDB) {
-
             binding.name.text = movie.name
 
             val release_date = movie.release_date
@@ -51,6 +53,12 @@ class ProdAdapter : ListAdapter<MoviesDB, ProdAdapter.ProdViewHolder>(DIFF_CALLB
             val posterPath = movie.poster_path
             var imageUrl = "$baseUrl$posterPath"
             Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgSearchMovie)
+
+            binding.favourite.setOnClickListener{
+                onClickDel(movie)
+                binding.list.visibility = View.GONE
+            }
+
         }
     }
 }

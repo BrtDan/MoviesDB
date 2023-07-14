@@ -1,24 +1,29 @@
 package com.example.favourite
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.favourite.databinding.FavouriteactivityLayoutBinding
-import com.example.network.MoviesDB
-import com.example.network.MoviesDatabase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class favouriteActivity : AppCompatActivity() {
 
     private val binding by lazy { FavouriteactivityLayoutBinding.inflate(layoutInflater) }
     val viewModel by viewModels<FavouriteViewModel>()
-    private val adapter by lazy { ProdAdapter }
+    private val adapter by lazy {
+        ProdAdapter(
+
+            onClickDel = {
+                Toast.makeText(this, "${it.name} eliminato dai preferiti", Toast.LENGTH_LONG)
+                    .show()
+                viewModel.deleteFromDB(it.idProduct.toString().toInt())
+            }
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,14 +31,18 @@ class favouriteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-//        binding.recycleView.adapter = adapter
+        binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = LinearLayoutManager(this)
 
         viewModel.getDataFromDb()
         viewModel.text.observe(this) {
             val list = it.data
-            println()
-//            adapter.submitList(list)
+            adapter.submitList(list)
+            if(it.data.isNullOrEmpty()){
+                binding.textEmpty.visibility = View.VISIBLE
+            } else {
+                binding.textEmpty.visibility = View.GONE
+            }
         }
 
         binding.list.setOnClickListener{
