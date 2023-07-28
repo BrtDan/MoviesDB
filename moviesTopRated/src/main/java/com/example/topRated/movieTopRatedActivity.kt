@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.firstmoviestoprated.R
-import com.example.firstmoviestoprated.databinding.MovietopratedLayoutBinding
+import com.example.topRated.R
+import com.example.topRated.databinding.MovietopratedLayoutBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,15 +18,16 @@ class movieTopRatedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val type : String? = intent.getStringExtra("type")
+        val type: String? = intent.getStringExtra("type")
 
-        val id : Int = intent.getStringExtra("id").toString().toInt()
-        val language : String = intent.getStringExtra("language").toString()
+        val id: Int = intent.getStringExtra("id").toString().toInt()
 
-        if(type == "movie"){
+        val language: String = intent.getStringExtra("language").toString()
+
+        if (type == "movie") {
             println("MOVIE")
             viewModel.getDetailsMovies(id, language)
-            viewModel.text.observe(this){
+            viewModel.text.observe(this) {
                 binding.imageView.visibility = View.VISIBLE
                 val baseUrl = "https://image.tmdb.org/t/p/w500"
                 val posterPath = it.moviesData?.poster_path
@@ -47,11 +48,11 @@ class movieTopRatedActivity : AppCompatActivity() {
                 val formattedVoteAvg = String.format("%.1f", voteAvg?.toFloat() ?: 0.0f)
                 binding.voteAvg.text = formattedVoteAvg
             }
-        } else if (type == "tv"){
+        } else if (type == "tv") {
             println("TV")
             binding.imageView.visibility = View.VISIBLE
             viewModel.getDetailsTv(id, language)
-            viewModel.textTv.observe(this){
+            viewModel.textTv.observe(this) {
                 val baseUrl = "https://image.tmdb.org/t/p/w500"
                 val posterPath = it.tvsData?.poster_path
                 var imageUrl = "$baseUrl$posterPath"
@@ -71,12 +72,12 @@ class movieTopRatedActivity : AppCompatActivity() {
                 val formattedVoteAvg = String.format("%.1f", voteAvg?.toFloat() ?: 0.0f)
                 binding.voteAvg.text = formattedVoteAvg
             }
-        } else if (type == "trendDay"){
+        } else if (type == "trendDay") {
             println("TREND DAY")
             binding.imageView.visibility = View.VISIBLE
-            if(intent.getStringExtra("typeTrend").toString() == "movie"){
+            if (intent.getStringExtra("typeTrend").toString() == "movie") {
                 viewModel.getDetailsMovies(id, language)
-                viewModel.text.observe(this){
+                viewModel.text.observe(this) {
                     val baseUrl = "https://image.tmdb.org/t/p/w500"
                     val posterPath = it.moviesData?.poster_path
                     var imageUrl = "$baseUrl$posterPath"
@@ -96,14 +97,15 @@ class movieTopRatedActivity : AppCompatActivity() {
                     val formattedVoteAvg = String.format("%.1f", voteAvg?.toFloat() ?: 0.0f)
                     binding.voteAvg.text = formattedVoteAvg
                 }
-            } else{
+            } else {
                 binding.imageView.visibility = View.VISIBLE
                 viewModel.getDetailsTv(id, language)
-                viewModel.textTv.observe(this){
+                viewModel.textTv.observe(this) {
                     val baseUrl = "https://image.tmdb.org/t/p/w500"
                     val posterPath = it.tvsData?.poster_path
                     var imageUrl = "$baseUrl$posterPath"
-                    Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view).error(R.drawable.placeholder_view).into(binding.imgMovie)
+                    Picasso.get().load(imageUrl).placeholder(R.drawable.placeholder_view)
+                        .error(R.drawable.placeholder_view).into(binding.imgMovie)
 
                     val originalTitle = it.tvsData?.original_name
                     val originalLang = it.tvsData?.original_language
@@ -121,11 +123,11 @@ class movieTopRatedActivity : AppCompatActivity() {
                 }
             }
         }
-        binding.titleTextView.setOnClickListener{
+        binding.titleTextView.setOnClickListener {
             finish()
         }
 
-        binding.goBack.setOnClickListener{
+        binding.goBack.setOnClickListener {
             finish()
         }
 

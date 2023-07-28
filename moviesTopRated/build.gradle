@@ -6,7 +6,8 @@ plugins {
 }
 
 android {
-    namespace 'com.example.firstmoviestoprated'
+    namespace 'com.example.topRated'
+    testNamespace 'com.example.topRated.test'
     compileSdk 33
 
     defaultConfig {
@@ -15,6 +16,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        testApplicationId "com.example.topRated"
     }
 
     buildTypes {
@@ -36,6 +39,12 @@ android {
 }
 
 dependencies {
+
+    // Dipendenze espress Testing
+
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1')
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
 
     // Dipendenze Hilt
     implementation 'com.google.dagger:hilt-android:2.46.1'

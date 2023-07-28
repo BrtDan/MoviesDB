@@ -291,9 +291,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         /* CLICK SULL'IMG LIST */
-        binding.list.setOnClickListener {
+        binding.toolbarbutton.setOnClickListener {
             if (state == "open") {
-                binding.list.setImageResource(R.drawable.baseline_tune_white_48)
+                binding.toolbarbutton.setImageResource(R.drawable.baseline_tune_white_48)
                 binding.body.visibility = View.VISIBLE
                 binding.searchBar.visibility = View.GONE
                 state = "close"
@@ -306,7 +306,7 @@ class MainActivity : AppCompatActivity() {
 
         /* CLICK SULL'IMG SEARCH */
         binding.search.setOnClickListener {
-            binding.list.setImageResource(R.drawable.baseline_close_white_48)
+            binding.toolbarbutton.setImageResource(R.drawable.baseline_close_white_48)
             binding.body.visibility = View.GONE
             binding.searchBar.visibility = View.VISIBLE
             state = "open"
@@ -321,7 +321,7 @@ class MainActivity : AppCompatActivity() {
         binding.searchActors.adapter = adapter3
         binding.searchActors.layoutManager = LinearLayoutManager(this@MainActivity)
 
-        binding.searchBarText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        /*binding.searchBarText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (binding.radioMovies.isChecked) {
                     viewModel.searchMovie(query, language)
@@ -360,7 +360,39 @@ class MainActivity : AppCompatActivity() {
                 binding.searchActors.visibility = View.GONE
                 return false
             }
-        })
+        })*/
+
+        binding.searchBarText2.setOnClickListener{
+            val query = binding.searchBarText2.text.toString()
+            if (binding.radioMovies.isChecked) {
+                viewModel.searchMovie(query, language)
+                viewModel.text_SearchMovie.observe(this@MainActivity) {
+                    binding.searchTv.visibility = View.GONE
+                    binding.searchItem.visibility = View.VISIBLE
+                    binding.searchActors.visibility = View.GONE
+                    val searchList = it.movieSearch
+                    adapter.submitList(searchList)
+                }
+            } else if (binding.radioTvSeries.isChecked) {
+                viewModel.searchTv(query, language)
+                viewModel.text_SearchTv.observe(this@MainActivity) {
+                    binding.searchItem.visibility = View.GONE
+                    binding.searchTv.visibility = View.VISIBLE
+                    binding.searchActors.visibility = View.GONE
+                    val searchList = it.tvSearch
+                    adapter2.submitList(searchList)
+                }
+            } else {
+                viewModel.searchActors(query, language)
+                viewModel.text_SearchAct.observe(this@MainActivity) {
+                    binding.searchTv.visibility = View.GONE
+                    binding.searchItem.visibility = View.GONE
+                    binding.searchActors.visibility = View.VISIBLE
+                    val searchList = it.actorsSearch
+                    adapter3.submitList(searchList)
+                }
+            }
+        }
 
         binding.fav.setOnClickListener {
             val intent = Intent(this, favouriteActivity::class.java)
